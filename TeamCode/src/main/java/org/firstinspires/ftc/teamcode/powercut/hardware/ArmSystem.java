@@ -1,17 +1,17 @@
-package org.firstinspires.ftc.teamcode.powercut;
+package org.firstinspires.ftc.teamcode.powercut.hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class ArmSystem {
-    private DcMotorEx arm = null;
-    private DcMotorEx wrist = null;
-    private Servo grip = null;
+    public DcMotorEx armMotor = null;
+    public DcMotorEx wristMotor = null;
+    public Servo grip = null;
 
     public void init(HardwareMap hardwareMap) {
-        arm = hardwareMap.get(DcMotorEx.class, "arm");
-        wrist = hardwareMap.get(DcMotorEx.class, "gripPose");
+        armMotor = hardwareMap.get(DcMotorEx.class, "arm");
+        wristMotor = hardwareMap.get(DcMotorEx.class, "gripPose");
         grip = hardwareMap.get(Servo.class, "grip");
     }
 
@@ -24,10 +24,15 @@ public class ArmSystem {
     }
 
     public void setArmPower(double armPowerRequested) {
-        arm.setPower(armPowerRequested);
+        armMotor.setPower(armPowerRequested);
     }
 
     public void setWristPower(double wristPowerRequested) {
-        wrist.setPower(wristPowerRequested);
+        wristMotor.setPower(wristPowerRequested);
+    }
+
+    public void stop() {
+        armMotor.setPower(0);
+        wristMotor.setPower(0);
     }
 }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.powercut;
+package org.firstinspires.ftc.teamcode.powercut.hardware;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -22,6 +22,19 @@ public class Drivetrain {
         frontRight.setPower(frontRightRequest);
         backLeft.setPower(backLeftRequest);
         backRight.setPower(backRightRequest);
+     }
+
+     public void doPowerFromGamepad(Double axial, Double lateral, Double yaw, Double modifier) {
+         // Math out the power for each wheel
+         double frontLeftPowerCalculated = (axial + lateral + yaw) * modifier;
+         double frontRightPowerCalculated = (axial - lateral - yaw) * modifier;
+         double backLeftPowerCalculated = (axial - lateral + yaw) * modifier;
+         double backRightPowerCalculated = (axial + lateral - yaw) * modifier;
+
+         frontLeft.setPower(frontLeftPowerCalculated);
+         frontRight.setPower(frontRightPowerCalculated);
+         backLeft.setPower(backLeftPowerCalculated);
+         backRight.setPower(backRightPowerCalculated);
      }
 
      public double[] getPowers(){
