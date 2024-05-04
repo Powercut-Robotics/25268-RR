@@ -7,15 +7,13 @@ import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.teamcode.powercut.control.PIDController;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 
-public class ArmControlLogic extends MainTeleOp {
-    private ArmSystem arm = new ArmSystem();
-
-    public ArmControlLogic(HardwareMap hardwareMap) {
-        arm.init(hardwareMap);
-    }
-
-
+public class ArmController extends MainTeleOp {
     private RobotSettings settings = new RobotSettings();
+    private ArmSystem arm = robot.arm;
+//    public ArmController(HardwareMap hardwareMap) {
+//        arm.init(hardwareMap);
+//    }
+
     private PIDController armPIDController = settings.armPIDController;
     private PIDController wristPIDController = settings.wristPIDController;
 

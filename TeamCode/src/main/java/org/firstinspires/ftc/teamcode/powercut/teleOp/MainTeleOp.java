@@ -8,36 +8,33 @@ import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.teamcode.powercut.control.PIDController;
 import org.firstinspires.ftc.teamcode.powercut.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
-import org.firstinspires.ftc.teamcode.powercut.teleOp.logic.ArmControlLogic;
-import org.firstinspires.ftc.teamcode.powercut.telemetry.MainTelemetry;
+import org.firstinspires.ftc.teamcode.powercut.hardware.Robot;
+import org.firstinspires.ftc.teamcode.powercut.teleOp.logic.ArmController;
+import org.firstinspires.ftc.teamcode.powercut.teleOp.logic.DrivetrainController;
 
 
 @TeleOp(name="Drive")
 public class MainTeleOp extends OpMode {
     // Declaring the system
     private RobotSettings settings = new RobotSettings();
-    private ArmControlLogic armController = new ArmControlLogic(hardwareMap);
-    private Drivetrain drivetrain = settings.drivetrain;
+    protected Robot robot = settings.robot;
+    private ArmController armController = new ArmController();
+    private Drivetrain drivetrain = robot.drivetrain;
+    private DrivetrainController drivetrainController = new DrivetrainController();
     public DroneSystem droneSystem = new DroneSystem();
 
-
-
-    // Declaring PID controllers
-    private PIDController armPIDController = settings.armPIDController;
-    private PIDController wristPIDController = settings.wristPIDController;
 
     // Game monitoring
     public boolean isEndGame = false;
     private ElapsedTime runtime = new ElapsedTime();
     public ElapsedTime loopTime = new ElapsedTime();
-    private MainTelemetry mainTelemetry = new MainTelemetry(gamepad1, gamepad2, loopTime, runtime, telemetry);
     // System Monitoring
 
 
 
     @Override
     public void init() {
-        drivetrain.init(hardwareMap);
+        settings.init(hardwareMap);
         droneSystem.init(hardwareMap);
         droneSystem.preset();
     }
@@ -53,12 +50,12 @@ public class MainTeleOp extends OpMode {
         double lateral = gamepad1.left_stick_x;
         double yaw = gamepad1.right_stick_x;
 
-        drivetrain.doPowerFromGamepad(axial, lateral, yaw, getSpeedModifier());
+        drivetrainController.doPowerFromGamepad(axial, lateral, yaw, getSpeedModifier());
         armController.doArmControl();
         droneControl();
 
         // Telemetry
-        MainTelemetry.updateTelemetry();
+        updateTelemetry();
         loopTime.reset();
 
     }

@@ -1,17 +1,24 @@
 package org.firstinspires.ftc.teamcode.powercut;
 
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.teamcode.R;
 import org.firstinspires.ftc.teamcode.powercut.control.PIDCoefficients;
 import org.firstinspires.ftc.teamcode.powercut.control.PIDController;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.Drivetrain;
+import org.firstinspires.ftc.teamcode.powercut.hardware.Robot;
 
 public class RobotSettings {
     // DON'T EDIT - DECLARATIONS!
-    private ArmSystem arm = new ArmSystem();
+    public Robot robot = new Robot();
+    private ArmSystem arm = robot.arm;
+    private Drivetrain drivetrain = robot.drivetrain;
 
-    // Drivetrain setup
+    public void init(HardwareMap hardwareMap) {
+        robot.init(hardwareMap);
+    }
 
-    public Drivetrain drivetrain = new Drivetrain();
 
     // PID values and integral limits.
     public PIDCoefficients armPIDCoefficients = new PIDCoefficients(0.0, 0.0, 0.0);
