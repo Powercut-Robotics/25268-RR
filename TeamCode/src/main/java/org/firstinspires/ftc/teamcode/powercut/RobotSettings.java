@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.powercut;
 
+import com.ThermalEquilibrium.homeostasis.Parameters.FeedforwardCoefficients;
+import com.ThermalEquilibrium.homeostasis.Parameters.PIDCoefficientsEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.R;
@@ -22,6 +24,8 @@ public class RobotSettings {
 
     // PID values and integral limits.
     public PIDCoefficients armPIDCoefficients = new PIDCoefficients(0.0, 0.0, 0.0);
+    public PIDCoefficientsEx armCoefficients = new PIDCoefficientsEx(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    public FeedforwardCoefficients armFFCoefficients = new FeedforwardCoefficients(0.0,0.0, 0.0);
     public PIDCoefficients wristPIDCoefficients = new PIDCoefficients(0.0, 0.0, 0.0);
 
     public PIDController armPIDController = new PIDController(armPIDCoefficients, arm.armMotor, 0.0);

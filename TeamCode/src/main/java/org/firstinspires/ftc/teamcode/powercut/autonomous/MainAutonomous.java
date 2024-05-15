@@ -22,7 +22,6 @@ public class MainAutonomous extends OpMode {
     private DroneSystem droneSystem = robot.droneSystem;
 
     // Declaring PID controllers
-    private PIDController armPIDController = settings.armPIDController;
     private PIDController wristPIDController = settings.wristPIDController;
 
     // Game monitoring
