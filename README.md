@@ -1,4 +1,5 @@
-# Road Runner Quickstart
+# Team 25268 - Powercut
 
-Check out the [docs](https://rr.brott.dev/docs/v1-0/tuning/).
+Robot code for UK team 497, Global #25268
 
+Forked from the Road Runner Quickstart.
