@@ -14,26 +14,10 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.Robot;
 
 @Config
 public class RobotSettings {
-    // DON'T EDIT - DECLARATIONS!
-    public Robot robot = new Robot();
-    private ArmSystem arm = robot.arm;
-    private Drivetrain drivetrain = robot.drivetrain;
-
-    public void init(HardwareMap hardwareMap) {
-        robot.init(hardwareMap);
-    }
-
-
     // PID values and integral limits.
-    public PIDCoefficients armPIDCoefficients = new PIDCoefficients(0.0, 0.0, 0.0);
     public PIDCoefficientsEx armCoefficients = new PIDCoefficientsEx(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-    public FeedforwardCoefficients armFFCoefficients = new FeedforwardCoefficients(0.0,0.0, 0.0);
-
     public PIDCoefficientsEx wristCoefficients = new PIDCoefficientsEx(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-    public PIDCoefficients wristPIDCoefficients = new PIDCoefficients(0.0, 0.0, 0.0);
 
-    public PIDController armPIDController = new PIDController(armPIDCoefficients, arm.armMotor, 0.0);
-    public PIDController wristPIDController = new PIDController(wristPIDCoefficients, arm.wristMotor, 0.0);
 
     // Preset positions
     public int armUpPosition = 1000;
