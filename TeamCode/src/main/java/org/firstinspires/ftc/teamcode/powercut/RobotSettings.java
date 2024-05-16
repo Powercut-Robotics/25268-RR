@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.powercut;
 
 import com.ThermalEquilibrium.homeostasis.Parameters.FeedforwardCoefficients;
 import com.ThermalEquilibrium.homeostasis.Parameters.PIDCoefficientsEx;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.R;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.powercut.hardware.Robot;
 
+@Config
 public class RobotSettings {
     // DON'T EDIT - DECLARATIONS!
     public Robot robot = new Robot();
@@ -26,6 +28,8 @@ public class RobotSettings {
     public PIDCoefficients armPIDCoefficients = new PIDCoefficients(0.0, 0.0, 0.0);
     public PIDCoefficientsEx armCoefficients = new PIDCoefficientsEx(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     public FeedforwardCoefficients armFFCoefficients = new FeedforwardCoefficients(0.0,0.0, 0.0);
+
+    public PIDCoefficientsEx wristCoefficients = new PIDCoefficientsEx(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     public PIDCoefficients wristPIDCoefficients = new PIDCoefficients(0.0, 0.0, 0.0);
 
     public PIDController armPIDController = new PIDController(armPIDCoefficients, arm.armMotor, 0.0);

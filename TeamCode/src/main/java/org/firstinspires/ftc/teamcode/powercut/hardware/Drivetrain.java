@@ -22,6 +22,15 @@ public class Drivetrain {
         backRight.setPower(backRightRequest);
      }
 
+    public void doPowerFromGamepad(Double axial, Double lateral, Double yaw, Double modifier) {
+        // Math out the power for each wheel
+        double frontLeftPowerCalculated = (axial + lateral + yaw) * modifier;
+        double frontRightPowerCalculated = (axial - lateral - yaw) * modifier;
+        double backLeftPowerCalculated = (axial - lateral + yaw) * modifier;
+        double backRightPowerCalculated = (axial + lateral - yaw) * modifier;
+
+        this.setDrivetrainPowers(frontLeftPowerCalculated, frontRightPowerCalculated, backLeftPowerCalculated, backRightPowerCalculated);
+    }
 
      public double[] getPowers(){
         double[] powers = {0.0,0.0,0.0,0.0};

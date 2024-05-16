@@ -27,11 +27,7 @@ public class ArmSystem {
 
     private final RobotSettings settings = new RobotSettings();
 
-    DoubleSupplier armMotorPosition = () -> armMotor.getCurrentPosition();
-    private PIDEx armController = new PIDEx(settings.armCoefficients);
-    private BasicFeedforward armFF = new BasicFeedforward(settings.armFFCoefficients);
-    RawValue noFilter = new RawValue(armMotorPosition);
-    BasicSystem armSystem = new BasicSystem(noFilter, armController, armFF);
+    private PIDEx armPID = new PIDEx(settings.armCoefficients);
 
     private PIDCoefficients wristPIDCoefficients = settings.wristPIDCoefficients;
 
@@ -69,9 +65,12 @@ public class ArmSystem {
             // checks lift's current position
             double pos = armMotor.getCurrentPosition();
             packet.put("armPos", pos);
+            double armPower;
 
-            double power = armSystem.update(target);
-            armMotor.setPower(power);
+            armPower = armPID.calculate(target, pos);
+            armMotor.setPower(armPower);
+
+
 
             if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + 5)) {
                 armMotor.setPower(0);
@@ -96,9 +95,10 @@ public class ArmSystem {
             // checks lift's current position
             double pos = armMotor.getCurrentPosition();
             packet.put("armPos", pos);
+            double armPower;
 
-            double power = armSystem.update(target);
-            armMotor.setPower(power);
+            armPower = armPID.calculate(target, pos);
+            armMotor.setPower(armPower);
 
             if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + 5)) {
                 armMotor.setPower(0);
