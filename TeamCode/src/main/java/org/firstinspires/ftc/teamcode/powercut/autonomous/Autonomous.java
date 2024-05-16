@@ -10,11 +10,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.Robot;
+import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 public class Autonomous extends LinearOpMode {
     private RobotSettings settings = new RobotSettings();
     private MecanumDrive drive;
+    private VisionSystem visionSystem = new VisionSystem();
 
 
     @Override
@@ -22,6 +24,8 @@ public class Autonomous extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, new Pose2d(11.8, 61.7, Math.toRadians(90)));
         ArmSystem arm = new ArmSystem();
         arm.init(hardwareMap);
+
+        visionSystem.init(hardwareMap);
 
         Action trajectoryAction1;
         Action trajectoryAction2;
