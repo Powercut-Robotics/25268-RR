@@ -29,6 +29,8 @@ public class ArmSystem {
 
     private PIDEx armPID = new PIDEx(settings.armCoefficients);
 
+    private PIDEx wristPID = new PIDEx(settings.wristCoefficients);
+
     private PIDCoefficients wristPIDCoefficients = settings.wristPIDCoefficients;
 
 
