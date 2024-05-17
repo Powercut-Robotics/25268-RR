@@ -57,6 +57,33 @@ public class ArmSystem {
         wristMotor.setPower(wristPowerRequested);
     }
 
+    public void armToPosition(double target) {
+        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Double currentPosition = armMotor.getCurrentPosition();
+        Double armPower = 0;
+        while (Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + 5) {
+            currentPosition = armMotor.getCurrentPosition();
+            armPower = armPID.calculate(target, currentPosition)
+            armMotor.setPower(armPower);
+        }
+
+        armMotor.setPower(0);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void wristToPosition(double target) {
+        wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Double currentPosition = wristMotor.getCurrentPosition();
+        Double wristPower = 0;
+        while (Math.abs(wristMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(target) + 5) {
+            wristPower = wristPID.calculate(target, currentPosition)
+            wristMotor.setPower(armPower);
+        }
+
+        wristMotor.setPower(0);
+        wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+    
     public class ArmUp implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -80,7 +107,7 @@ public class ArmSystem {
             armMotor.setPower(armPower);
             wristMotor.setPower(wristPower);
             
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + 5)) && ) {
+            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + 5)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + 5))) {
                 armMotor.setPower(0);
                 wristMotor.setPower(0);
                 
@@ -121,7 +148,7 @@ public class ArmSystem {
             armMotor.setPower(armPower);
             wristMotor.setPower(wristPower);
             
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + 5)) && ) {
+            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + 5)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + 5))) {
                 armMotor.setPower(0);
                 wristMotor.setPower(0);
                 
@@ -162,7 +189,7 @@ public class ArmSystem {
             armMotor.setPower(armPower);
             wristMotor.setPower(wristPower);
             
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + 5)) && ) {
+            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + 5)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + 5))) {
                 armMotor.setPower(0);
                 wristMotor.setPower(0);
                 
