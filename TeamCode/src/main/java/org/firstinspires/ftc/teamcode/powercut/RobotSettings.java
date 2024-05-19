@@ -1,16 +1,7 @@
 package org.firstinspires.ftc.teamcode.powercut;
 
-import com.ThermalEquilibrium.homeostasis.Parameters.FeedforwardCoefficients;
 import com.ThermalEquilibrium.homeostasis.Parameters.PIDCoefficientsEx;
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.teamcode.R;
-import org.firstinspires.ftc.teamcode.powercut.control.PIDCoefficients;
-import org.firstinspires.ftc.teamcode.powercut.control.PIDController;
-import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
-import org.firstinspires.ftc.teamcode.powercut.hardware.Drivetrain;
-import org.firstinspires.ftc.teamcode.powercut.hardware.Robot;
 
 @Config
 public class RobotSettings {
