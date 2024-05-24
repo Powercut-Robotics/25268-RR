@@ -3,9 +3,6 @@ package org.firstinspires.ftc.teamcode.powercut.hardware;
 import androidx.annotation.NonNull;
 
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
-import com.ThermalEquilibrium.homeostasis.Controllers.Feedforward.BasicFeedforward;
-import com.ThermalEquilibrium.homeostasis.Filters.Estimators.RawValue;
-import com.ThermalEquilibrium.homeostasis.Systems.BasicSystem;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -14,16 +11,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
-import org.firstinspires.ftc.teamcode.powercut.control.PIDCoefficients;
-import org.firstinspires.ftc.teamcode.powercut.control.PIDController;
 
-import java.util.function.DoubleSupplier;
 
 
 public class ArmSystem {
     public DcMotorEx armMotor = null;
     public DcMotorEx wristMotor = null;
-    public Servo grip = null;
+    public Servo gripLeft = null;
+    public Servo gripRight = null;
 
     private final RobotSettings settings = new RobotSettings();
 
@@ -35,18 +30,36 @@ public class ArmSystem {
     public void init(HardwareMap hardwareMap) {
         armMotor = hardwareMap.get(DcMotorEx.class, "arm");
         wristMotor = hardwareMap.get(DcMotorEx.class, "gripPose");
-        grip = hardwareMap.get(Servo.class, "grip");
+        gripLeft = hardwareMap.get(Servo.class, "gripLeft");
+        gripRight = hardwareMap.get(Servo.class, "gripRight");
+
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        wristMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+
+
     }
 
-    public void gripActivate() {
-        grip.setPosition(0.05);
+    public void gripLeftActivate() {
+        gripLeft.setPosition(0.09);
     }
 
-    public void gripRelease() {
-        grip.setPosition(0.0);
+    public void gripRightActivate() {
+        gripRight.setPosition(0.09);
+    }
+
+    public void gripLeftRelease() {
+        gripLeft.setPosition(0.15);
+    }
+
+    public void gripRightRelease() {
+        gripRight.setPosition(0.15);
     }
 
     public void setArmPower(double armPowerRequested) {
@@ -59,11 +72,12 @@ public class ArmSystem {
 
     public void armToPosition(double target) {
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Double currentPosition = armMotor.getCurrentPosition();
-        Double armPower = 0;
-        while (Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + 5) {
+        int currentPosition = armMotor.getCurrentPosition();
+        double armPower = 0;
+
+        while ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + 5)) {
             currentPosition = armMotor.getCurrentPosition();
-            armPower = armPID.calculate(target, currentPosition)
+            armPower = armPID.calculate(target, currentPosition);
             armMotor.setPower(armPower);
         }
 
@@ -73,11 +87,12 @@ public class ArmSystem {
 
     public void wristToPosition(double target) {
         wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Double currentPosition = wristMotor.getCurrentPosition();
-        Double wristPower = 0;
-        while (Math.abs(wristMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(target) + 5) {
-            wristPower = wristPID.calculate(target, currentPosition)
-            wristMotor.setPower(armPower);
+        int currentPosition = wristMotor.getCurrentPosition();
+        double wristPower = 0;
+
+        while ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(target) + 5)) {
+            wristPower = wristPID.calculate(target, currentPosition);
+            wristMotor.setPower(wristPower);
         }
 
         wristMotor.setPower(0);
@@ -89,15 +104,16 @@ public class ArmSystem {
         public boolean run(@NonNull TelemetryPacket packet) {
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            double armTarget = 5000;
-            double wristTarget = 500;
+            double armTarget = settings.armUpPosition;
+            double wristTarget = settings.wristUpPosition;
             
             // checks lift's current position
             double armPos = armMotor.getCurrentPosition();
             double wristPos = wristMotor.getCurrentPosition();
             
-            packet.put("armPos", pos);
-            
+            packet.put("armPos", armPos);
+            packet.put("wristPos", wristPos);
+
             double armPower;
             double wristPower;
             
@@ -130,14 +146,15 @@ public class ArmSystem {
         public boolean run(@NonNull TelemetryPacket packet) {
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            double armTarget = 2000;
-            double wristTarget = 200;
+            double armTarget = settings.armIntakePosition;
+            double wristTarget = settings.wristIntakePosition;
             
             // checks lift's current position
             double armPos = armMotor.getCurrentPosition();
             double wristPos = wristMotor.getCurrentPosition();
             
-            packet.put("armPos", pos);
+            packet.put("armPos", armPos);
+            packet.put("wristPos", wristPos);
             
             double armPower;
             double wristPower;
@@ -171,14 +188,15 @@ public class ArmSystem {
         public boolean run(@NonNull TelemetryPacket packet) {
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            double armTarget = 2000;
-            double wristTarget = 200;
+            double armTarget = settings.armDownPosition;
+            double wristTarget = settings.wristDownPosition;
             
             // checks lift's current position
             double armPos = armMotor.getCurrentPosition();
             double wristPos = wristMotor.getCurrentPosition();
             
-            packet.put("armPos", pos);
+            packet.put("armPos", armPos);
+            packet.put("wristPos", wristPos);
             
             double armPower;
             double wristPower;

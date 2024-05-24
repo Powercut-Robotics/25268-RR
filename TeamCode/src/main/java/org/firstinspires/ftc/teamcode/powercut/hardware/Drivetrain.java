@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.powercut.hardware;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Drivetrain {
@@ -13,6 +15,10 @@ public class Drivetrain {
         frontRight = hardwareMap.get(DcMotorEx.class, "FrontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "BackLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "BackRight");
+
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
     }
 
      public void setDrivetrainPowers(Double frontLeftRequest, Double frontRightRequest, Double backLeftRequest, Double backRightRequest) {

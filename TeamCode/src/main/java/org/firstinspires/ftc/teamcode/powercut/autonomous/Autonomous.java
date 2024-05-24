@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
-import org.firstinspires.ftc.teamcode.powercut.hardware.Robot;
 import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
@@ -64,7 +63,7 @@ public class Autonomous extends LinearOpMode {
                 .build();
 
 
-        int visionOutputPosition = 1;
+        int visionOutputPosition = visionSystem.getGamepeicePosition();
 
         while (!isStopRequested() && !opModeIsActive()) {
             int position = visionOutputPosition;

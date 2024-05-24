@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
@@ -16,6 +17,7 @@ import java.util.List;
 
 
 public class VisionSystem {
+    private RobotSettings settings = new RobotSettings();
     public VisionPortal visionSystem;
     private AprilTagProcessor aprilTagProcessor;
     private TfodProcessor TfodProcessor;
@@ -43,12 +45,13 @@ public class VisionSystem {
         visionSystem = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
                 .setCameraResolution(new Size(640, 480))
+                .enableLiveView(true)
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .addProcessors(aprilTagProcessor, TfodProcessor)
                 .build();
 
-        visionSystem.setProcessorEnabled(aprilTagProcessor, false);
-        visionSystem.setProcessorEnabled(TfodProcessor, false);
+        // visionSystem.setProcessorEnabled(aprilTagProcessor, false);
+        // visionSystem.setProcessorEnabled(TfodProcessor, false);
     }
 
     public List<AprilTagDetection> getAprilTags() {
@@ -68,5 +71,28 @@ public class VisionSystem {
 
         visionSystem.setProcessorEnabled(TfodProcessor, false);
         return currentRecognitions;
+    }
+
+    public int getGamepeicePosition() {
+        visionSystem.setProcessorEnabled(TfodProcessor, true);
+
+        List<Recognition> currentRecognitions = TfodProcessor.getRecognitions();
+
+        int position = 0;
+
+        for (Recognition recognition : currentRecognitions) {
+            float left = recognition.getLeft();
+            float right = recognition.getRight();
+
+            if (left >= settings.spikeMark1[0] && right <= settings.spikeMark1[1]) {
+                position = 1;
+            } else if (left >= settings.spikeMark2[0] && right <= settings.spikeMark2[1]) {
+                position = 2;
+            } else if (left >= settings.spikeMark3[0] && right <= settings.spikeMark3[1]) {
+                position = 3;
+            }
+        }
+
+        return position;
     }
 }
