@@ -6,13 +6,15 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-public class Autonomous extends LinearOpMode {
+@Autonomous(name = "Autonomous")
+public class MainAutonomous extends LinearOpMode {
     private RobotSettings settings = new RobotSettings();
     private MecanumDrive drive;
     private VisionSystem visionSystem = new VisionSystem();
@@ -101,6 +103,7 @@ public class Autonomous extends LinearOpMode {
 
     public void updateTelemetry() {
         while (opModeIsActive()) {
+
             telemetry.addData("Pose:", "%4.2f, %4.2f, %4.1f", drive.pose.position.x, drive.pose.position.y, drive.pose.heading.real);
 
             telemetry.update();

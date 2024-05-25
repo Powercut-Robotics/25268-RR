@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
+import org.firstinspires.ftc.vision.apriltag.AprilTagLibrary;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -27,9 +28,12 @@ public class VisionSystem {
             "Pixel",
     };
 
+    private final AprilTagLibrary tagLibrary = AprilTagGameDatabase.getCurrentGameTagLibrary();
+
     public void init(HardwareMap hardwareMap) {
         aprilTagProcessor = new AprilTagProcessor.Builder()
-                .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
+                .setTagLibrary(tagLibrary)
+                .setLensIntrinsics(658.92, 658.923, 438.245, 202.074)
                 .setDrawTagID(true)
                 .setDrawTagOutline(true)
                 .setDrawAxes(true)
@@ -39,28 +43,25 @@ public class VisionSystem {
         TfodProcessor = new TfodProcessor.Builder()
                 .setModelAssetName(TFOD_MODEL_ASSET)
                 .setModelLabels(LABELS)
-
                 .build();
 
         visionSystem = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+
                 .setCameraResolution(new Size(640, 480))
                 .enableLiveView(true)
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .addProcessors(aprilTagProcessor, TfodProcessor)
                 .build();
 
-        // visionSystem.setProcessorEnabled(aprilTagProcessor, false);
         // visionSystem.setProcessorEnabled(TfodProcessor, false);
     }
 
     public List<AprilTagDetection> getAprilTags() {
-        visionSystem.setProcessorEnabled(aprilTagProcessor, true);
         aprilTagProcessor.setDecimation(2);
 
         List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
 
-        visionSystem.setProcessorEnabled(aprilTagProcessor, false);
         return currentDetections;
     }
 

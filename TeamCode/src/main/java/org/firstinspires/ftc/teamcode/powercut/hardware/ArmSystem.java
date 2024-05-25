@@ -22,9 +22,9 @@ public class ArmSystem {
 
     private final RobotSettings settings = new RobotSettings();
 
-    private PIDEx armPID = new PIDEx(settings.armCoefficients);
+    private PIDEx armPID = new PIDEx(RobotSettings.armCoefficients);
 
-    private PIDEx wristPID = new PIDEx(settings.wristCoefficients);
+    private PIDEx wristPID = new PIDEx(RobotSettings.wristCoefficients);
 
     
     public void init(HardwareMap hardwareMap) {
@@ -62,8 +62,19 @@ public class ArmSystem {
         gripRight.setPosition(0.15);
     }
 
+    public void gripLeftTuck() { gripLeft.setPosition(0.5); }
+
+    public void gripRightTuck() { gripRight.setPosition(0.5); }
+
     public void setArmPower(double armPowerRequested) {
-        armMotor.setPower(armPowerRequested);
+        if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(RobotSettings.armUpperLimit)) && armPowerRequested < 0) {
+            armMotor.setPower(0);
+        } else if ((armMotor.getCurrentPosition() > RobotSettings.armLowerLimit) && armPowerRequested > 0) {
+            armMotor.setPower(0);
+        } else {
+            armMotor.setPower(armPowerRequested);
+        }
+
     }
 
     public void setWristPower(double wristPowerRequested) {
@@ -75,7 +86,7 @@ public class ArmSystem {
         int currentPosition = armMotor.getCurrentPosition();
         double armPower = 0;
 
-        while ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + 5)) {
+        while ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + RobotSettings.armDeadband)) {
             currentPosition = armMotor.getCurrentPosition();
             armPower = armPID.calculate(target, currentPosition);
             armMotor.setPower(armPower);
@@ -90,7 +101,7 @@ public class ArmSystem {
         int currentPosition = wristMotor.getCurrentPosition();
         double wristPower = 0;
 
-        while ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(target) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(target) + 5)) {
+        while ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(target) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(target) + RobotSettings.wristDeadband)) {
             wristPower = wristPID.calculate(target, currentPosition);
             wristMotor.setPower(wristPower);
         }
@@ -98,14 +109,52 @@ public class ArmSystem {
         wristMotor.setPower(0);
         wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    
+
+    public class GripActivate implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            gripLeftActivate();
+            gripRightActivate();
+            return false;
+        }
+    }
+
+    public Action gripActivate() {
+        return new GripActivate();
+    }
+
+    public class GripRelease implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            gripLeftRelease();
+            gripRightRelease();
+            return false;
+        }
+    }
+
+    public Action gripRelease() {
+        return new GripRelease();
+    }
+
+    public class GripTuck implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            gripLeftTuck();
+            gripRightTuck();
+            return false;
+        }
+    }
+
+    public Action gripTuck() {
+        return new GripTuck();
+    }
     public class ArmUp implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            double armTarget = settings.armUpPosition;
-            double wristTarget = settings.wristUpPosition;
+            double armTarget = RobotSettings.armUpPosition;
+            double wristTarget = RobotSettings.wristUpPosition;
             
             // checks lift's current position
             double armPos = armMotor.getCurrentPosition();
@@ -123,7 +172,7 @@ public class ArmSystem {
             armMotor.setPower(armPower);
             wristMotor.setPower(wristPower);
             
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + 5)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + 5))) {
+            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
                 armMotor.setPower(0);
                 wristMotor.setPower(0);
                 
@@ -146,8 +195,8 @@ public class ArmSystem {
         public boolean run(@NonNull TelemetryPacket packet) {
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            double armTarget = settings.armIntakePosition;
-            double wristTarget = settings.wristIntakePosition;
+            double armTarget = RobotSettings.armIntakePosition;
+            double wristTarget = RobotSettings.wristIntakePosition;
             
             // checks lift's current position
             double armPos = armMotor.getCurrentPosition();
@@ -165,7 +214,7 @@ public class ArmSystem {
             armMotor.setPower(armPower);
             wristMotor.setPower(wristPower);
             
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + 5)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + 5))) {
+            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
                 armMotor.setPower(0);
                 wristMotor.setPower(0);
                 
@@ -188,8 +237,8 @@ public class ArmSystem {
         public boolean run(@NonNull TelemetryPacket packet) {
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            double armTarget = settings.armDownPosition;
-            double wristTarget = settings.wristDownPosition;
+            double armTarget = RobotSettings.armDownPosition;
+            double wristTarget = RobotSettings.wristDownPosition;
             
             // checks lift's current position
             double armPos = armMotor.getCurrentPosition();
@@ -206,8 +255,8 @@ public class ArmSystem {
             
             armMotor.setPower(armPower);
             wristMotor.setPower(wristPower);
-            
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - 5) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + 5)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - 5) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + 5))) {
+
+            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
                 armMotor.setPower(0);
                 wristMotor.setPower(0);
                 
