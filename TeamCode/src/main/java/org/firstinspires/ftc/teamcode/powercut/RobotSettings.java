@@ -9,7 +9,7 @@ import java.lang.reflect.Array;
 public class RobotSettings {
     // PID values and integral limits.
 
-    public static PIDCoefficientsEx armCoefficients = new PIDCoefficientsEx(0.04, 0.01, 0.03, 25, 100, 0.3);
+    public static PIDCoefficientsEx armCoefficients = new PIDCoefficientsEx(60, 1.5, 3, 0.18, 0, 0);
     public static PIDCoefficientsEx wristCoefficients = new PIDCoefficientsEx(0.001, 0.01, 0.2, 25.0, 1.0, 0.5);
 
     public static double armDeadband = 5;
