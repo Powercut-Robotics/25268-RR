@@ -37,29 +37,29 @@ public class MainAutonomous extends LinearOpMode {
         Action trajectoryActionCloseOut;
 
         trajectoryActionLeft = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(7.73, -33.88), Math.toRadians(164.48))
+                .splineTo(new Vector2d(5, -35), Math.toRadians(120))
                 .build();
         trajectoryActionCentre = drive.actionBuilder(drive.pose)
                 .splineTo(new Vector2d(12, -35), Math.toRadians(90))
                 .build();
         trajectoryActionRight = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(20.86, -38.01), Math.toRadians(46.35))
+                .splineTo(new Vector2d(19, -35), Math.toRadians(60))
                 .build();
 
         Action trajToBackLeft = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(1,1), Math.toRadians(180))
+                .splineTo(new Vector2d(51, -30), Math.toRadians(180))
                 .build();
 
         Action trajToBackCentre = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(1,1), Math.toRadians(180))
+                .splineTo(new Vector2d(51,-35), Math.toRadians(180))
                 .build();
 
         Action trajToBackRight = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(1,1), Math.toRadians(180))
+                .splineTo(new Vector2d(51,-40), Math.toRadians(180))
                 .build();
 
         Action closeOut = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(1,1), Math.toRadians(0))
+                .splineTo(new Vector2d(60,-10), Math.toRadians(180))
                 .build();
 
         int visionOutputPosition = visionSystem.getGamepeicePosition();
