@@ -18,11 +18,11 @@ public class RobotSettings {
     public static double armLowerLimit = 200;
 
     // Preset positions
-    public static int armUpPosition = -3355;
-    public static int  wristUpPosition = 5;
+    public static int armUpPosition = -4000;
+    public static int  wristUpPosition = -30;
 
 
-    public static int armDownPosition = -60;
+    public static int armDownPosition = 0;
     public static int wristDownPosition = -100;
 
     // Gamepad settings
@@ -38,10 +38,10 @@ public class RobotSettings {
 
     // Game-specific modifiers
     public static float[] spikeMark1 = {0, 200};
-    public static float[] spikeMark2 = {150, 450};
+    public static float[] spikeMark2 = {0, 640};
     public static float[] spikeMark3 = {450, 640};
 
     //vision modifiers
-    public static int[] clippingMargins = {0,100,0,0};
+    public static int[] clippingMargins = {0,150,0,100};
 
 }
