@@ -141,7 +141,7 @@ public class MainTeleOp extends OpMode {
             runningActions.clear();
         }
 
-        if (gamepad2.touchpad && gamepad2.left_bumper && gamepad2.right_bumper) {
+        if (gamepad2.share && gamepad2.left_bumper && gamepad2.right_bumper) {
             arm.resetEncoders();
         }
     }

@@ -1,24 +1,21 @@
 package org.firstinspires.ftc.teamcode.powercut.autonomous;
 
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.InstantAction;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
-import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 @Autonomous(name = "Autonomous")
 public class MainAutonomous extends LinearOpMode {
-    private RobotSettings settings = new RobotSettings();
     private MecanumDrive drive;
     private VisionSystem visionSystem = new VisionSystem();
 
@@ -49,6 +46,22 @@ public class MainAutonomous extends LinearOpMode {
                 .splineTo(new Vector2d(20.86, -38.01), Math.toRadians(46.35))
                 .build();
 
+        Action trajToBackLeft = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(1,1), Math.toRadians(180))
+                .build();
+
+        Action trajToBackCentre = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(1,1), Math.toRadians(180))
+                .build();
+
+        Action trajToBackRight = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(1,1), Math.toRadians(180))
+                .build();
+
+        Action closeOut = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(1,1), Math.toRadians(0))
+                .build();
+
         int visionOutputPosition = visionSystem.getGamepeicePosition();
 
         while (!isStopRequested() && !opModeIsActive()) {
@@ -64,29 +77,40 @@ public class MainAutonomous extends LinearOpMode {
 
         if (isStopRequested()) return;
         Action trajectoryActionChosen;
-
+        Action backTrajChosen;
         if (startPosition == 1) {
             trajectoryActionChosen = trajectoryActionLeft;
+            backTrajChosen = trajToBackLeft;
         } else if (startPosition == 2) {
             trajectoryActionChosen = trajectoryActionCentre;
+            backTrajChosen = trajToBackCentre;
         } else if (startPosition == 3) {
             trajectoryActionChosen = trajectoryActionRight;
+            backTrajChosen = trajToBackRight;
         } else {
             trajectoryActionChosen = trajectoryActionCentre;
+            backTrajChosen = trajToBackCentre;
         };
+
         Actions.runBlocking(
                 new SequentialAction(
-                        trajectoryActionChosen,
-                        arm.armDown(),
+                        new ParallelAction(
+                                trajectoryActionChosen,
+                                arm.armDown()
+                        ),
                         new SleepAction(0.5),
                         arm.gripLeftReleaseAction(),
-                        new SleepAction(0.5)
+                        new SleepAction(0.5),
+                        new ParallelAction(
+                                backTrajChosen,
+                                arm.armUp()
+                        ),
+                        new SleepAction(0.5),
+                        arm.gripRightReleaseAction(),
+                        closeOut,
+                        arm.armToResetPosition()
                 )
         );
-
-        Action trajToBack = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(1,1), Math.toRadians(180))
-                .build();
 
 
 

@@ -250,7 +250,50 @@ public class ArmSystem {
         return new ArmDown();
     }
 
-    public void resetEncoders() {
+    public class ToResetPosition implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+
+            double armTarget = 0;
+            double wristTarget = 0;
+
+            packet.put("armTarget", armTarget);
+            packet.put("wristTarget", wristTarget);
+
+            // checks lift's current position
+            double armPos = armMotor.getCurrentPosition();
+            double wristPos = wristMotor.getCurrentPosition();
+
+            packet.put("armPos", armPos);
+            packet.put("wristPos", wristPos);
+
+            double armPower;
+            double wristPower;
+
+            armPower = armDownPID.calculate(armTarget, armPos);
+            wristPower = wristPID.calculate(wristTarget, wristPos);
+
+            packet.put("armPower", armPower);
+            packet.put("wristPower", wristPower);
+
+
+            armMotor.setPower(armPower);
+            wristMotor.setPower(wristPower);
+
+            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
+                armMotor.setPower(0);
+                wristMotor.setPower(0);
+                return false;
+            } else  {
+                // true causes the action to rerun
+                return true;
+            }
+        }
+    }
+
+    public Action armToResetPosition() { return new ToResetPosition(); }
+
+        public void resetEncoders() {
         DcMotorEx.RunMode armMode = armMotor.getMode();
         DcMotorEx.RunMode wristMode = wristMotor.getMode();
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
