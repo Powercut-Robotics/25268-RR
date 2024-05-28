@@ -107,12 +107,9 @@ public class MainTeleOp extends OpMode {
             arm.stop();
         }
 
-        if (gamepad2.dpad_down) {
+        if (gamepad2.dpad_left) {
             arm.gripLeftActivate();
             arm.gripRightActivate();
-        } else if (gamepad2.dpad_up) {
-            arm.gripLeftRelease();
-            arm.gripRightRelease();
         } else if (gamepad2.dpad_right) {
             arm.gripLeftTuck();
             arm.gripRightTuck();
@@ -143,6 +140,10 @@ public class MainTeleOp extends OpMode {
         } else if (gamepad2.square) {
             runningActions.clear();
         }
+
+        if (gamepad2.touchpad && gamepad2.left_bumper && gamepad2.right_bumper) {
+            arm.resetEncoders();
+        }
     }
 
     private void droneControl() {
@@ -153,7 +154,7 @@ public class MainTeleOp extends OpMode {
 
     private double getSpeedModifier(){
         double speedMultiplier = RobotSettings.totalSpeedModifier;
-        if (gamepad1.left_stick_button || gamepad1.right_stick_button) {
+        if (gamepad1.left_bumper || gamepad1.right_bumper) {
             speedMultiplier = RobotSettings.slowmodeSpeedModifier;
         }
 

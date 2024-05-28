@@ -252,6 +252,15 @@ public class ArmSystem {
     public Action armDown() {
         return new ArmDown();
     }
+
+    public void resetEncoders() {
+        DcMotorEx.RunMode armMode = armMotor.getMode();
+        DcMotorEx.RunMode wristMode = wristMotor.getMode();
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(armMode);
+        wristMotor.setMode(wristMode);
+    }
     
     public void stop() {
         armMotor.setPower(0);
