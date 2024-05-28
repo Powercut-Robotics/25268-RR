@@ -22,8 +22,8 @@ public class ArmSystem {
 
     private final RobotSettings settings = new RobotSettings();
 
-    private PIDEx armPID = new PIDEx(RobotSettings.armCoefficients);
-
+    private PIDEx armUpPID = new PIDEx(RobotSettings.armUpCoefficients);
+    private PIDEx armDownPID = new PIDEx(RobotSettings.armDownCoefficients);
     private PIDEx wristPID = new PIDEx(RobotSettings.wristCoefficients);
 
     
@@ -49,17 +49,59 @@ public class ArmSystem {
     public void gripLeftActivate() {
         gripLeft.setPosition(0.09);
     }
+    public class GripLeftActivate implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            gripLeftActivate();
+            return false;
+        }
+    }
+        return new GripLeftActivate();
+    }
+
 
     public void gripRightActivate() {
         gripRight.setPosition(0.09);
     }
+    public class GripRightActivate implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            gripRightActivate();
+            return false;
+        }
+    }
+    public Action gripRightActivateAction() {
+        return new GripRightActivate();
+    }
+
 
     public void gripLeftRelease() {
         gripLeft.setPosition(0.15);
     }
+    public class GripLeftRelease implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            gripLeftRelease();
+            return false;
+        }
+    }
+    public Action gripLeftReleaseAction() {
+        return new GripLeftRelease();
+    }
+
 
     public void gripRightRelease() {
         gripRight.setPosition(0.15);
+    }
+    public class GripRightRelease implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            gripRightRelease();
+            return false;
+        }
+    }
+    public Action gripRightReleaseAction() {
+        return new GripLeftRelease();
     }
 
     public void gripLeftTuck() { gripLeft.setPosition(0.5); }
@@ -79,35 +121,6 @@ public class ArmSystem {
 
     public void setWristPower(double wristPowerRequested) {
         wristMotor.setPower(wristPowerRequested);
-    }
-
-    public void armToPosition(double target) {
-        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        int currentPosition = armMotor.getCurrentPosition();
-        double armPower = 0;
-
-        while ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(target) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(target) + RobotSettings.armDeadband)) {
-            currentPosition = armMotor.getCurrentPosition();
-            armPower = armPID.calculate(target, currentPosition);
-            armMotor.setPower(armPower);
-        }
-
-        armMotor.setPower(0);
-        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    public void wristToPosition(double target) {
-        wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        int currentPosition = wristMotor.getCurrentPosition();
-        double wristPower = 0;
-
-        while ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(target) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(target) + RobotSettings.wristDeadband)) {
-            wristPower = wristPID.calculate(target, currentPosition);
-            wristMotor.setPower(wristPower);
-        }
-
-        wristMotor.setPower(0);
-        wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public class GripActivate implements Action {
@@ -166,7 +179,7 @@ public class ArmSystem {
             double armPower;
             double wristPower;
             
-            armPower = armPID.calculate(armTarget, armPos);
+            armPower = armUpPID.calculate(armTarget, armPos);
             wristPower = wristPID.calculate(wristTarget, wristPos);
             
             armMotor.setPower(armPower);
@@ -190,55 +203,16 @@ public class ArmSystem {
         return new ArmUp();
     }
 
-    public class ArmIntake implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            double armTarget = RobotSettings.armIntakePosition;
-            double wristTarget = RobotSettings.wristIntakePosition;
-            
-            // checks lift's current position
-            double armPos = armMotor.getCurrentPosition();
-            double wristPos = wristMotor.getCurrentPosition();
-            
-            packet.put("armPos", armPos);
-            packet.put("wristPos", wristPos);
-            
-            double armPower;
-            double wristPower;
-            
-            armPower = armPID.calculate(armTarget, armPos);
-            wristPower = wristPID.calculate(wristTarget, wristPos);
-            
-            armMotor.setPower(armPower);
-            wristMotor.setPower(wristPower);
-            
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
-                armMotor.setPower(0);
-                wristMotor.setPower(0);
-                
-                armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                return false;
-            } else  {
-                // true causes the action to rerun
-                return true;
-            }
-        }
-    }
-
-    public Action armIntake() {
-        return new ArmIntake();
-    }
-
-        public class ArmDown implements Action {
+    public class ArmDown implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             double armTarget = RobotSettings.armDownPosition;
             double wristTarget = RobotSettings.wristDownPosition;
+
+            packet.put("armTarget", armTarget);
+            packet.put("wristTarget", wristTarget);
             
             // checks lift's current position
             double armPos = armMotor.getCurrentPosition();
@@ -249,10 +223,14 @@ public class ArmSystem {
             
             double armPower;
             double wristPower;
-            
-            armPower = armPID.calculate(armTarget, armPos);
+
+            armPower = armDownPID.calculate(armTarget, armPos);
             wristPower = wristPID.calculate(wristTarget, wristPos);
-            
+
+            packet.put("armPower", armPower);
+            packet.put("wristPower", wristPower);
+
+
             armMotor.setPower(armPower);
             wristMotor.setPower(wristPower);
 

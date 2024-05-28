@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.powercut.teleOp;
 
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
-import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
-import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -33,8 +31,6 @@ public class MainTeleOp extends OpMode {
     private ArmSystem arm = new ArmSystem();
     public DroneSystem droneSystem = new DroneSystem();
     public VisionSystem visionSystem = new VisionSystem();
-    private PIDEx armPID = new PIDEx(settings.armCoefficients);
-    private PIDEx gripPID = new PIDEx(settings.wristCoefficients);
 
 
     // Game monitoring
@@ -101,7 +97,7 @@ public class MainTeleOp extends OpMode {
         double armSpeed = -gamepad2.left_stick_y;
         double wristSpeed = gamepad2.right_stick_y;
 
-        if (Math.abs(armSpeed) > settings.manualArmControlDeadband || Math.abs(wristSpeed) > settings.manualWristControlDeadband) {
+        if (Math.abs(armSpeed) > RobotSettings.manualArmControlDeadband || Math.abs(wristSpeed) > RobotSettings.manualWristControlDeadband) {
             runningActions.clear();
             arm.setArmPower(armSpeed);
             arm.setWristPower(wristSpeed * 0.5);
@@ -111,12 +107,15 @@ public class MainTeleOp extends OpMode {
             arm.stop();
         }
 
-        if (gamepad2.dpad_left) {
+        if (gamepad2.dpad_down) {
             arm.gripLeftActivate();
             arm.gripRightActivate();
-        } else if (gamepad2.dpad_right) {
+        } else if (gamepad2.dpad_up) {
             arm.gripLeftRelease();
             arm.gripRightRelease();
+        } else if (gamepad2.dpad_right) {
+            arm.gripLeftTuck();
+            arm.gripRightTuck();
         }
     }
 
@@ -128,26 +127,21 @@ public class MainTeleOp extends OpMode {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
-                            arm.armIntake(),
+                            arm.armDown(),
                             arm.gripTuck()
                     )
 
             );
         } else if (gamepad2.cross) {
             runningActions.clear();
-            runningActions.add(arm.armDown());
+            runningActions.add(
+                    new ParallelAction(
+                            arm.armDown(),
+                            arm.gripRelease()
+                    )
+            );
         } else if (gamepad2.square) {
             runningActions.clear();
-            runningActions.add(new SequentialAction(
-                    new ParallelAction(
-                            arm.gripTuck(),
-                            arm.armDown()
-                    ),
-                    new SleepAction(0.5),
-                    arm.gripActivate(),
-                    new SleepAction(0.5),
-                    arm.armIntake()
-            ));
         }
     }
 
@@ -158,9 +152,9 @@ public class MainTeleOp extends OpMode {
     }
 
     private double getSpeedModifier(){
-        double speedMultiplier = settings.totalSpeedModifier;
+        double speedMultiplier = RobotSettings.totalSpeedModifier;
         if (gamepad1.left_stick_button || gamepad1.right_stick_button) {
-            speedMultiplier = settings.slowmodeSpeedModifier;
+            speedMultiplier = RobotSettings.slowmodeSpeedModifier;
         }
 
         return speedMultiplier;
@@ -173,9 +167,10 @@ public class MainTeleOp extends OpMode {
         for (AprilTagDetection detection : detections) {
             try {
                 telemetry.addData("===== Detected ID", detection.id);
-                telemetry.addData("Pose", "%4.2f, %4.2f, %5.2f", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.yaw);
+                telemetry.addData("Pose", "%4.2f, %4.2f, %5.2f, %5.2f", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.yaw, detection.ftcPose.bearing);
                 telemetry.addData("Distance", detection.ftcPose.range);
                 telemetry.addData("Name", detection.metadata.name);
+                telemetry.addData("Field Pos", "%4.2f, %4.2f", detection.metadata.fieldPosition.get(0), detection.metadata.fieldPosition.get(1));
             } catch (Exception e) {
                 telemetry.addData("Error:", e.getMessage());
             }

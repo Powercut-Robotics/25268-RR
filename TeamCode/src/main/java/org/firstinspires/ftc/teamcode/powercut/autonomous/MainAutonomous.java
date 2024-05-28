@@ -1,13 +1,16 @@
 package org.firstinspires.ftc.teamcode.powercut.autonomous;
 
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
@@ -22,46 +25,34 @@ public class MainAutonomous extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        drive = new MecanumDrive(hardwareMap, new Pose2d(11.8, 61.7, Math.toRadians(90)));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(12.39, -63, Math.toRadians(90)));
         ArmSystem arm = new ArmSystem();
         arm.init(hardwareMap);
 
         visionSystem.init(hardwareMap);
 
-        Action trajectoryAction1;
-        Action trajectoryAction2;
-        Action trajectoryAction3;
+        Action trajectoryActionLeft;
+        Action trajectoryActionCentre;
+        Action trajectoryActionRight;
         Action trajectoryActionCloseOut;
 
-        trajectoryAction1 = drive.actionBuilder(drive.pose)
-                .lineToYSplineHeading(33, Math.toRadians(0))
-                .waitSeconds(2)
-                .setTangent(Math.toRadians(90))
-                .lineToY(48)
-                .setTangent(Math.toRadians(0))
-                .lineToX(32)
-                .strafeTo(new Vector2d(44.5, 30))
-                .turn(Math.toRadians(180))
-                .lineToX(47.5)
-                .waitSeconds(3)
+        trajectoryActionLeft = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(7.73, -33.88), Math.toRadians(164.48))
                 .build();
-        trajectoryAction2 = drive.actionBuilder(drive.pose)
-                .lineToY(37)
-                .setTangent(Math.toRadians(0))
-                .lineToX(18)
-                .waitSeconds(3)
-                .setTangent(Math.toRadians(0))
-                .lineToXSplineHeading(46, Math.toRadians(180))
-                .waitSeconds(3)
+        trajectoryActionCentre = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(13.87, -32.51), Math.toRadians(92.06))
                 .build();
-        trajectoryAction3 = drive.actionBuilder(drive.pose)
-                .lineToYSplineHeading(33, Math.toRadians(180))
-                .waitSeconds(2)
-                .strafeTo(new Vector2d(46, 30))
-                .waitSeconds(3)
+        trajectoryActionRight = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(20.86, -38.01), Math.toRadians(46.35))
                 .build();
         trajectoryActionCloseOut = drive.actionBuilder(drive.pose)
                 .strafeTo(new Vector2d(48, 12))
+                .build();
+
+        Action trajectoryActionBackRight = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(0.00, 0.00), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(25.73, 29.75, Math.toRadians(170)), Math.toRadians(170))
+                .splineToConstantHeading(new Vector2d(49.55, 29.75), Math.toRadians(170.00))
                 .build();
 
 
@@ -83,19 +74,28 @@ public class MainAutonomous extends LinearOpMode {
         if (isStopRequested()) return;
 
         Action trajectoryActionChosen;
+        Action trajectoryActionBackChosen;
         if (startPosition == 1) {
-            trajectoryActionChosen = trajectoryAction1;
+            trajectoryActionChosen = trajectoryActionLeft;
+            trajectoryActionBackChosen = null;
         } else if (startPosition == 2) {
-            trajectoryActionChosen = trajectoryAction2;
+            trajectoryActionChosen = trajectoryActionCentre;
+            trajectoryActionBackChosen = null;
+        } else if (startPosition == 3) {
+            trajectoryActionChosen = trajectoryActionRight;
+            trajectoryActionBackChosen = trajectoryActionBackRight;
         } else {
-            trajectoryActionChosen = trajectoryAction3;
+            trajectoryActionChosen = trajectoryActionCentre;
+            trajectoryActionBackChosen = null;
         }
 
         Actions.runBlocking(
                 new SequentialAction(
                         trajectoryActionChosen,
-                        arm.armUp(),
-                        trajectoryActionCloseOut
+                        arm.armDown(),
+                        new SleepAction(0.5),
+                        arm.gripLeftReleaseAction(),
+                        new SleepAction(0.5)
                 )
         );
 
