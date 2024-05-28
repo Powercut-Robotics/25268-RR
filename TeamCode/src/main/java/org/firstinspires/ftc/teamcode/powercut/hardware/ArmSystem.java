@@ -56,6 +56,7 @@ public class ArmSystem {
             return false;
         }
     }
+    public Action gripLeftActivateAction() {
         return new GripLeftActivate();
     }
 
