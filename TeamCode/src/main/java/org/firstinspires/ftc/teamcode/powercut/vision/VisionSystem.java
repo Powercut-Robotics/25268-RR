@@ -53,6 +53,7 @@ public class VisionSystem {
                 .addProcessors(aprilTagProcessor, TfodProcessor)
                 .build();
 
+        TfodProcessor.setClippingMargins(RobotSettings.clippingMargins[0], RobotSettings.clippingMargins[1], RobotSettings.clippingMargins[2], RobotSettings.clippingMargins[3]);
         // visionSystem.setProcessorEnabled(TfodProcessor, false);
     }
 

@@ -31,6 +31,9 @@ public class MainAutonomous extends LinearOpMode {
 
         visionSystem.init(hardwareMap);
 
+        arm.gripLeftActivate();
+        arm.gripRightActivate();
+
         Action trajectoryActionLeft;
         Action trajectoryActionCentre;
         Action trajectoryActionRight;
@@ -40,21 +43,11 @@ public class MainAutonomous extends LinearOpMode {
                 .splineTo(new Vector2d(7.73, -33.88), Math.toRadians(164.48))
                 .build();
         trajectoryActionCentre = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(13.87, -32.51), Math.toRadians(92.06))
+                .splineTo(new Vector2d(12, -35), Math.toRadians(90))
                 .build();
         trajectoryActionRight = drive.actionBuilder(drive.pose)
                 .splineTo(new Vector2d(20.86, -38.01), Math.toRadians(46.35))
                 .build();
-        trajectoryActionCloseOut = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(48, 12))
-                .build();
-
-        Action trajectoryActionBackRight = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(0.00, 0.00), Math.toRadians(0))
-                .splineToSplineHeading(new Pose2d(25.73, 29.75, Math.toRadians(170)), Math.toRadians(170))
-                .splineToConstantHeading(new Vector2d(49.55, 29.75), Math.toRadians(170.00))
-                .build();
-
 
         int visionOutputPosition = visionSystem.getGamepeicePosition();
 
@@ -69,26 +62,18 @@ public class MainAutonomous extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        updateTelemetry();
-
         if (isStopRequested()) return;
-
         Action trajectoryActionChosen;
-        Action trajectoryActionBackChosen;
+
         if (startPosition == 1) {
             trajectoryActionChosen = trajectoryActionLeft;
-            trajectoryActionBackChosen = null;
         } else if (startPosition == 2) {
             trajectoryActionChosen = trajectoryActionCentre;
-            trajectoryActionBackChosen = null;
         } else if (startPosition == 3) {
             trajectoryActionChosen = trajectoryActionRight;
-            trajectoryActionBackChosen = trajectoryActionBackRight;
         } else {
             trajectoryActionChosen = trajectoryActionCentre;
-            trajectoryActionBackChosen = null;
-        }
-
+        };
         Actions.runBlocking(
                 new SequentialAction(
                         trajectoryActionChosen,
@@ -98,6 +83,12 @@ public class MainAutonomous extends LinearOpMode {
                         new SleepAction(0.5)
                 )
         );
+
+        Action trajToBack = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(1,1), Math.toRadians(180))
+                .build();
+
+
 
     }
 

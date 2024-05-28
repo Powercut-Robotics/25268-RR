@@ -36,8 +36,8 @@ public class ArmSystem {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         wristMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -165,23 +165,27 @@ public class ArmSystem {
     public class ArmUp implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             double armTarget = RobotSettings.armUpPosition;
             double wristTarget = RobotSettings.wristUpPosition;
-            
+
+            packet.put("armTarget", armTarget);
+            packet.put("wristTarget", wristTarget);
+
             // checks lift's current position
             double armPos = armMotor.getCurrentPosition();
             double wristPos = wristMotor.getCurrentPosition();
-            
+
             packet.put("armPos", armPos);
             packet.put("wristPos", wristPos);
 
             double armPower;
             double wristPower;
-            
+
             armPower = armUpPID.calculate(armTarget, armPos);
             wristPower = wristPID.calculate(wristTarget, wristPos);
+
+            packet.put("armPower", armPower);
+            packet.put("wristPower", wristPower);
             
             armMotor.setPower(armPower);
             wristMotor.setPower(wristPower);
@@ -189,9 +193,6 @@ public class ArmSystem {
             if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
                 armMotor.setPower(0);
                 wristMotor.setPower(0);
-                
-                armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 return false;
             } else  {
                 // true causes the action to rerun
@@ -207,8 +208,7 @@ public class ArmSystem {
     public class ArmDown implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            wristMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
             double armTarget = RobotSettings.armDownPosition;
             double wristTarget = RobotSettings.wristDownPosition;
 
@@ -238,9 +238,6 @@ public class ArmSystem {
             if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
                 armMotor.setPower(0);
                 wristMotor.setPower(0);
-                
-                armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                wristMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 return false;
             } else  {
                 // true causes the action to rerun

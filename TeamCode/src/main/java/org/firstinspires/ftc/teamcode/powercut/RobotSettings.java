@@ -7,8 +7,8 @@ import com.acmerobotics.dashboard.config.Config;
 public class RobotSettings {
     // PID values and integral limits.
 
-    public static PIDCoefficientsEx armUpCoefficients = new PIDCoefficientsEx(60, 1.5, 3, 0.18, 0, 0);
-    public static PIDCoefficientsEx armDownCoefficients = new PIDCoefficientsEx(60, 1.5, 3, 0.18, 0, 0);
+    public static PIDCoefficientsEx armUpCoefficients = new PIDCoefficientsEx(0.001, 0.001, 0, 25000, 0, 0);
+    public static PIDCoefficientsEx armDownCoefficients = new PIDCoefficientsEx(0.001, 0.001, 0, 25000, 0, 0);
     public static PIDCoefficientsEx wristCoefficients = new PIDCoefficientsEx(0.001, 0.01, 0.2, 25.0, 1.0, 0.5);
 
     public static double armDeadband = 5;
@@ -21,18 +21,16 @@ public class RobotSettings {
     public static int armUpPosition = -3355;
     public static int  wristUpPosition = 5;
 
-    public static int armIntakePosition = -102;
-    public static int wristIntakePosition = -80;
 
-    public static int armDownPosition = -102;
-    public static int wristDownPosition = -90;
+    public static int armDownPosition = -60;
+    public static int wristDownPosition = -100;
 
     // Gamepad settings
 
     public static double manualArmControlDeadband = 0.005;
     public static double manualWristControlDeadband = 0.005;
 
-    public int endgameRumbleTime = 500;
+    public int endgameRumbleTime = 200;
 
     // Speed modifiers
     public static double totalSpeedModifier = 1.0;
@@ -42,4 +40,8 @@ public class RobotSettings {
     public static float[] spikeMark1 = {0, 200};
     public static float[] spikeMark2 = {150, 450};
     public static float[] spikeMark3 = {450, 640};
+
+    //vision modifiers
+    public static int[] clippingMargins = {0,100,0,0};
+
 }
