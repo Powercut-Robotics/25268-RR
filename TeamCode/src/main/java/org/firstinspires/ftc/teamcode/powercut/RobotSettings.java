@@ -3,13 +3,12 @@ package org.firstinspires.ftc.teamcode.powercut;
 import com.ThermalEquilibrium.homeostasis.Parameters.PIDCoefficientsEx;
 import com.acmerobotics.dashboard.config.Config;
 
-import java.lang.reflect.Array;
-
 @Config
 public class RobotSettings {
     // PID values and integral limits.
 
-    public static PIDCoefficientsEx armCoefficients = new PIDCoefficientsEx(60, 1.5, 3, 0.18, 0, 0);
+    public static PIDCoefficientsEx armUpCoefficients = new PIDCoefficientsEx(60, 1.5, 3, 0.18, 0, 0);
+    public static PIDCoefficientsEx armDownCoefficients = new PIDCoefficientsEx(60, 1.5, 3, 0.18, 0, 0);
     public static PIDCoefficientsEx wristCoefficients = new PIDCoefficientsEx(0.001, 0.01, 0.2, 25.0, 1.0, 0.5);
 
     public static double armDeadband = 5;
@@ -37,10 +36,10 @@ public class RobotSettings {
 
     // Speed modifiers
     public static double totalSpeedModifier = 1.0;
-    public static double slowmodeSpeedModifier = 0.3;
+    public static double slowmodeSpeedModifier = 0.2;
 
     // Game-specific modifiers
-    public static float[] spikeMark1 = {0, 150};
+    public static float[] spikeMark1 = {0, 200};
     public static float[] spikeMark2 = {150, 450};
     public static float[] spikeMark3 = {450, 640};
 }

@@ -18,7 +18,6 @@ import java.util.List;
 
 
 public class VisionSystem {
-    private RobotSettings settings = new RobotSettings();
     public VisionPortal visionSystem;
     private AprilTagProcessor aprilTagProcessor;
     private TfodProcessor TfodProcessor;
@@ -60,9 +59,7 @@ public class VisionSystem {
     public List<AprilTagDetection> getAprilTags() {
         aprilTagProcessor.setDecimation(2);
 
-        List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
-
-        return currentDetections;
+        return aprilTagProcessor.getDetections();
     }
 
     public List<Recognition> getTfodRecognitions() {
@@ -85,11 +82,11 @@ public class VisionSystem {
             float left = recognition.getLeft();
             float right = recognition.getRight();
 
-            if (left >= settings.spikeMark1[0] && right <= settings.spikeMark1[1]) {
+            if (left >= RobotSettings.spikeMark1[0] && right <= RobotSettings.spikeMark1[1]) {
                 position = 1;
-            } else if (left >= settings.spikeMark2[0] && right <= settings.spikeMark2[1]) {
+            } else if (left >= RobotSettings.spikeMark2[0] && right <= RobotSettings.spikeMark2[1]) {
                 position = 2;
-            } else if (left >= settings.spikeMark3[0] && right <= settings.spikeMark3[1]) {
+            } else if (left >= RobotSettings.spikeMark3[0] && right <= RobotSettings.spikeMark3[1]) {
                 position = 3;
             }
         }
