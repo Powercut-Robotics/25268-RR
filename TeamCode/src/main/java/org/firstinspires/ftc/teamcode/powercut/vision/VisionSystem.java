@@ -72,6 +72,20 @@ public class VisionSystem {
         return currentRecognitions;
     }
 
+    public boolean isGamepeicePresent() {
+        visionSystem.setProcessorEnabled(TfodProcessor, true);
+
+        List<Recognition> currentRecognitions = TfodProcessor.getRecognitions();
+
+        visionSystem.setProcessorEnabled(TfodProcessor, false);
+
+        if (currentRecognitions.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public int getGamepeicePosition() {
         visionSystem.setProcessorEnabled(TfodProcessor, true);
 

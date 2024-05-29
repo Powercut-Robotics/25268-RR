@@ -26,15 +26,25 @@ public class MainAutonomous extends LinearOpMode {
         ArmSystem arm = new ArmSystem();
         arm.init(hardwareMap);
 
+        int position = 0;
+
         visionSystem.init(hardwareMap);
 
         arm.gripLeftActivate();
         arm.gripRightActivate();
 
+        Action lookLeftSM = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(11.33, -45.32), Math.toRadians(117.55))
+                .build();
+
+        Action lookCentrelSM = drive.actionBuilder(drive.pose)
+                .splineTo(new Vector2d(8.26, -34.31), Math.toRadians(63.43))
+                .build();
+
+
         Action trajectoryActionLeft;
         Action trajectoryActionCentre;
         Action trajectoryActionRight;
-        Action trajectoryActionCloseOut;
 
         trajectoryActionLeft = drive.actionBuilder(drive.pose)
                 .splineTo(new Vector2d(5, -35), Math.toRadians(120))
@@ -51,21 +61,21 @@ public class MainAutonomous extends LinearOpMode {
                 .build();
 
         Action trajToBackCentre = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(51,-35), Math.toRadians(180))
+                .splineTo(new Vector2d(51, -35), Math.toRadians(180))
                 .build();
 
         Action trajToBackRight = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(51,-40), Math.toRadians(180))
+                .splineTo(new Vector2d(51, -40), Math.toRadians(180))
                 .build();
 
         Action closeOut = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(60,-10), Math.toRadians(180))
+                .splineTo(new Vector2d(60, -10), Math.toRadians(180))
                 .build();
 
         int visionOutputPosition = visionSystem.getGamepeicePosition();
 
         while (!isStopRequested() && !opModeIsActive()) {
-            int position = visionOutputPosition;
+
             telemetry.addData("Position during Init", position);
             telemetry.update();
         }
@@ -90,30 +100,32 @@ public class MainAutonomous extends LinearOpMode {
         } else {
             trajectoryActionChosen = trajectoryActionCentre;
             backTrajChosen = trajToBackCentre;
-        };
+        }
+        ;
 
-        Actions.runBlocking(
-                new SequentialAction(
-                        new ParallelAction(
-                                trajectoryActionChosen,
-                                arm.armDown()
-                        ),
-                        new SleepAction(0.5),
-                        arm.gripLeftReleaseAction(),
-                        new SleepAction(0.5),
-                        new ParallelAction(
-                                backTrajChosen,
-                                arm.armUp()
-                        ),
-                        new SleepAction(0.5),
-                        arm.gripRightReleaseAction(),
-                        closeOut,
-                        arm.armToResetPosition()
-                )
-        );
+        // runtime
+
+        Actions.runBlocking(lookLeftSM);
+
+        if (visionSystem.isGamepeicePresent()) {
+            position = 1;
+            telemetry.addData("pos", position);
+        }
 
 
+        if (position != 1) {
+            Actions.runBlocking(lookCentrelSM);
 
+            if (visionSystem.isGamepeicePresent()) {
+                position = 2;
+                telemetry.addData("pos", position);
+            } else {
+                position = 3;
+                telemetry.addData("pos", position);
+            }
+
+
+        }
     }
 
     public void updateTelemetry() {
