@@ -114,6 +114,10 @@ public class MainTeleOp extends OpMode {
             arm.gripLeftTuck();
             arm.gripRightTuck();
         }
+
+        if (gamepad2.share && gamepad2.left_bumper && gamepad2.right_bumper) {
+            arm.resetEncoders();
+        }
     }
 
     private void presetArmControl() {
@@ -141,9 +145,7 @@ public class MainTeleOp extends OpMode {
             runningActions.clear();
         }
 
-        if (gamepad2.share && gamepad2.left_bumper && gamepad2.right_bumper) {
-            arm.resetEncoders();
-        }
+
     }
 
     private void droneControl() {
