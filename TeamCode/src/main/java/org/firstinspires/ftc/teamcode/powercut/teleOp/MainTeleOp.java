@@ -123,12 +123,18 @@ public class MainTeleOp extends OpMode {
     private void presetArmControl() {
         if (gamepad2.triangle) {
             runningActions.clear();
-            runningActions.add(arm.armUp());
+            runningActions.add(
+                    new ParallelAction(
+                            arm.armUp(),
+                            arm.wristUp()
+                    )
+            );
         } else if (gamepad2.circle) {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
                             arm.armDown(),
+                            arm.wristDown(),
                             arm.gripTuck()
                     )
 
@@ -138,6 +144,7 @@ public class MainTeleOp extends OpMode {
             runningActions.add(
                     new ParallelAction(
                             arm.armDown(),
+                            arm.wristDown(),
                             arm.gripRelease()
                     )
             );

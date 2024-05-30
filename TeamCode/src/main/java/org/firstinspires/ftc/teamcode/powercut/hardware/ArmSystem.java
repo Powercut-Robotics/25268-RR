@@ -26,7 +26,8 @@ public class ArmSystem {
     private PIDEx armDownPID = new PIDEx(RobotSettings.armDownCoefficients);
     private PIDEx wristPID = new PIDEx(RobotSettings.wristCoefficients);
 
-    
+
+    // resets and inits
     public void init(HardwareMap hardwareMap) {
         armMotor = hardwareMap.get(DcMotorEx.class, "arm");
         wristMotor = hardwareMap.get(DcMotorEx.class, "gripPose");
@@ -46,6 +47,16 @@ public class ArmSystem {
 
     }
 
+    public void resetEncoders() {
+        DcMotorEx.RunMode armMode = armMotor.getMode();
+        DcMotorEx.RunMode wristMode = wristMotor.getMode();
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(armMode);
+        wristMotor.setMode(wristMode);
+    }
+
+    // powers and grip
     public void gripLeftActivate() {
         gripLeft.setPosition(0.09);
     }
@@ -124,6 +135,10 @@ public class ArmSystem {
         wristMotor.setPower(wristPowerRequested);
     }
 
+
+
+    //actions
+
     public class GripActivate implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -178,7 +193,6 @@ public class ArmSystem {
                 packet.put("armPower", armPower);
 
                 armMotor.setPower(armPower);
-
 
 
             if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
@@ -242,8 +256,6 @@ public class ArmSystem {
             packet.put("armPower", armPower);
 
             armMotor.setPower(armPower);
-
-
 
             if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
                 armMotor.setPower(0);
@@ -353,15 +365,6 @@ public class ArmSystem {
 
     public Action wristToResetPosition() {
         return new WristToResetPosition();
-    }
-
-        public void resetEncoders() {
-        DcMotorEx.RunMode armMode = armMotor.getMode();
-        DcMotorEx.RunMode wristMode = wristMotor.getMode();
-        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armMotor.setMode(armMode);
-        wristMotor.setMode(wristMode);
     }
     
     public void stop() {

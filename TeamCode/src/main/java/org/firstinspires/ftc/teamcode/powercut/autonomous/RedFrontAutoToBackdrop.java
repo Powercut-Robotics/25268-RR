@@ -41,7 +41,7 @@ public class RedFrontAutoToBackdrop extends OpMode {
 
         arm.gripLeftActivate();
         arm.gripRightActivate();
-        //droneSystem.preset();
+        droneSystem.preset();
 
         telemetry.addLine("Init hardware positions");
         telemetry.update();
