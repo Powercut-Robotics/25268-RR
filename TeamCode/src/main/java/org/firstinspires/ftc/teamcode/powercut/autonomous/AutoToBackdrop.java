@@ -49,11 +49,13 @@ public class AutoToBackdrop extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(38.5, -48), Math.toRadians(180))
+                .lineToY(-30)
+                .turn(Math.toRadians(90))
+                .strafeTo(new Vector2d(54, -30))
                 .build();
 
         park = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(40, -62))
+                .strafeTo(new Vector2d(55, -62))
                 .build();
 
         telemetry.addLine("Init paths. Fully Initialised.");
@@ -66,11 +68,14 @@ public class AutoToBackdrop extends OpMode {
       Actions.runBlocking(new SequentialAction(
               toBackdrop,
               new SleepAction(1),
-              arm.armUp(),
+              new ParallelAction(
+                      arm.armUp(),
+                      arm.wristUp()
+              ),
               new SleepAction(1),
               arm.gripTuck(),
               new SleepAction(1),
-              new ParallelAction(arm.armToResetPosition(), park)
+              new ParallelAction(arm.armToResetPosition(), arm.wristToResetPosition(), arm.gripRelease(), park)
       ));
 
         // to backdrop

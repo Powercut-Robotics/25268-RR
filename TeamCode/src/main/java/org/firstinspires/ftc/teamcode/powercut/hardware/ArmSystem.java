@@ -163,41 +163,33 @@ public class ArmSystem {
         return new GripTuck();
     }
     public class ArmUp implements Action {
+
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
+
             double armTarget = RobotSettings.armUpPosition;
-            double wristTarget = RobotSettings.wristUpPosition;
+                packet.put("armTarget", armTarget);
 
-            packet.put("armTarget", armTarget);
-            packet.put("wristTarget", wristTarget);
+                double armPos = armMotor.getCurrentPosition();
+                packet.put("armPos", armPos);
 
-            // checks lift's current position
-            double armPos = armMotor.getCurrentPosition();
-            double wristPos = wristMotor.getCurrentPosition();
+                double armPower;
+                armPower = armDownPID.calculate(armTarget, armPos);
+                packet.put("armPower", armPower);
 
-            packet.put("armPos", armPos);
-            packet.put("wristPos", wristPos);
+                armMotor.setPower(armPower);
 
-            double armPower;
-            double wristPower;
 
-            armPower = armUpPID.calculate(armTarget, armPos);
-            wristPower = wristPID.calculate(wristTarget, wristPos);
 
-            packet.put("armPower", armPower);
-            packet.put("wristPower", wristPower);
-            
-            armMotor.setPower(armPower);
-            wristMotor.setPower(wristPower);
-            
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
+            if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
                 armMotor.setPower(0);
-                wristMotor.setPower(0);
                 return false;
-            } else  {
-                // true causes the action to rerun
+            } else {
                 return true;
             }
+
+
+
         }
     }
 
@@ -205,44 +197,63 @@ public class ArmSystem {
         return new ArmUp();
     }
 
+    public class WristUp implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+
+                double wristTarget = RobotSettings.wristUpPosition;
+                packet.put("wristTarget", wristTarget);
+
+                double wristPos = wristMotor.getCurrentPosition();
+                packet.put("wristPos", wristPos);
+
+                double wristPower;
+                wristPower = wristPID.calculate(wristTarget, wristPos);
+                packet.put("wristPower", wristPower);
+
+                wristMotor.setPower(wristPower);
+
+            if ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband)) {
+                wristMotor.setPower(0);
+                return false;
+            } else {
+                return true;
+            }
+
+        }
+    }
+
+    public Action wristUp() {
+        return new WristUp();
+    }
+
     public class ArmDown implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
 
             double armTarget = RobotSettings.armDownPosition;
-            double wristTarget = RobotSettings.wristDownPosition;
-
             packet.put("armTarget", armTarget);
-            packet.put("wristTarget", wristTarget);
-            
-            // checks lift's current position
+
             double armPos = armMotor.getCurrentPosition();
-            double wristPos = wristMotor.getCurrentPosition();
-            
             packet.put("armPos", armPos);
-            packet.put("wristPos", wristPos);
-            
+
             double armPower;
-            double wristPower;
-
             armPower = armDownPID.calculate(armTarget, armPos);
-            wristPower = wristPID.calculate(wristTarget, wristPos);
-
             packet.put("armPower", armPower);
-            packet.put("wristPower", wristPower);
-
 
             armMotor.setPower(armPower);
-            wristMotor.setPower(wristPower);
 
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
+
+
+            if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
                 armMotor.setPower(0);
-                wristMotor.setPower(0);
                 return false;
-            } else  {
-                // true causes the action to rerun
+            } else {
                 return true;
             }
+
+
+
         }
     }
 
@@ -250,48 +261,99 @@ public class ArmSystem {
         return new ArmDown();
     }
 
-    public class ToResetPosition implements Action {
+    public class WristDown implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+
+            double wristTarget = RobotSettings.wristDownPosition;
+            packet.put("wristTarget", wristTarget);
+
+            double wristPos = wristMotor.getCurrentPosition();
+            packet.put("wristPos", wristPos);
+
+            double wristPower;
+            wristPower = wristPID.calculate(wristTarget, wristPos);
+            packet.put("wristPower", wristPower);
+
+            wristMotor.setPower(wristPower);
+
+            if ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband)) {
+                wristMotor.setPower(0);
+                return false;
+            } else {
+                return true;
+            }
+
+        }
+    }
+
+    public Action wristDown() {
+        return new WristDown();
+    }
+
+    public class ArmToResetPosition implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
 
             double armTarget = 0;
-            double wristTarget = 0;
-
             packet.put("armTarget", armTarget);
-            packet.put("wristTarget", wristTarget);
 
-            // checks lift's current position
             double armPos = armMotor.getCurrentPosition();
-            double wristPos = wristMotor.getCurrentPosition();
-
             packet.put("armPos", armPos);
-            packet.put("wristPos", wristPos);
 
             double armPower;
-            double wristPower;
-
             armPower = armDownPID.calculate(armTarget, armPos);
-            wristPower = wristPID.calculate(wristTarget, wristPos);
-
             packet.put("armPower", armPower);
-            packet.put("wristPower", wristPower);
-
 
             armMotor.setPower(armPower);
-            wristMotor.setPower(wristPower);
 
-            if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) && ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband))) {
+
+
+            if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
                 armMotor.setPower(0);
-                wristMotor.setPower(0);
                 return false;
-            } else  {
-                // true causes the action to rerun
+            } else {
                 return true;
             }
+
+
+
         }
     }
 
-    public Action armToResetPosition() { return new ToResetPosition(); }
+    public Action armToResetPosition() {
+        return new ArmToResetPosition();
+    }
+
+    public class WristToResetPosition implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+
+            double wristTarget = 0;
+            packet.put("wristTarget", wristTarget);
+
+            double wristPos = wristMotor.getCurrentPosition();
+            packet.put("wristPos", wristPos);
+
+            double wristPower;
+            wristPower = wristPID.calculate(wristTarget, wristPos);
+            packet.put("wristPower", wristPower);
+
+            wristMotor.setPower(wristPower);
+
+            if ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband)) {
+                wristMotor.setPower(0);
+                return false;
+            } else {
+                return true;
+            }
+
+        }
+    }
+
+    public Action wristToResetPosition() {
+        return new WristToResetPosition();
+    }
 
         public void resetEncoders() {
         DcMotorEx.RunMode armMode = armMotor.getMode();
