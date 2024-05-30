@@ -17,8 +17,8 @@ import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 @Config
-@Autonomous(name = "BackBlueAutoToBackdrop", preselectTeleOp = "Drive")
-public class AutoToBackdrop extends OpMode {
+@Autonomous(name = "BackRedAutoToBackdrop", preselectTeleOp = "Drive")
+public class RedBackAutoToBackdrop extends OpMode {
     private MecanumDrive drive;
     private VisionSystem visionSystem = new VisionSystem();
     private ArmSystem arm = new ArmSystem();
