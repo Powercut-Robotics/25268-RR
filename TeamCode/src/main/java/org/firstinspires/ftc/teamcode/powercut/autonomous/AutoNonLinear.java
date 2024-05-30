@@ -1,36 +1,40 @@
 package org.firstinspires.ftc.teamcode.powercut.autonomous;
 
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
+import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-@Autonomous(name = "Autonomous", preselectTeleOp = "Drive")
-public class MainAutonomous extends LinearOpMode {
+@Autonomous(name = "MainAuto", preselectTeleOp = "Drive")
+public class AutoNonLinear extends OpMode {
     private MecanumDrive drive;
     private VisionSystem visionSystem = new VisionSystem();
     private ArmSystem arm = new ArmSystem();
+    private DroneSystem droneSystem = new DroneSystem();
 
     // monitoring
     private int position = 0;
+
+    private Action lookLeftSM;
+    private Action turnToCentreSM;
+    private Action turnToRightSM;
     @Override
-    public void runOpMode() {
+    public void init() {
         drive = new MecanumDrive(hardwareMap, new Pose2d(12, -63, Math.toRadians(90)));
         arm.init(hardwareMap);
         visionSystem.init(hardwareMap);
+        droneSystem.init(hardwareMap);
+        droneSystem.preset();
 
-        Action lookLeftSM;
-        Action turnToCentreSM;
-        Action turnToRightSM;
+        Actions.runBlocking(arm.gripActivate());
 
         lookLeftSM = drive.actionBuilder(drive.pose)
                 .splineTo(new Vector2d(12, -36), Math.toRadians(90))
@@ -45,14 +49,11 @@ public class MainAutonomous extends LinearOpMode {
                 .splineTo(new Vector2d(12, -36), Math.toRadians(180))
                 .build();
 
-        Actions.runBlocking(arm.gripActivate());
 
-        waitForStart();
+    }
 
-        if (isStopRequested()) return;
-
-        // runtime
-
+    @Override
+    public void start() {
         Actions.runBlocking(lookLeftSM);
 
         if (visionSystem.isGamepeicePresent()) {
@@ -89,8 +90,12 @@ public class MainAutonomous extends LinearOpMode {
         }
 
         // to backdrop
-
     }
 
+    @Override
+    public void loop() {
+        telemetry.addData("Pose", "%4.2f, %4.2f, %4.1f", drive.pose.position.x, drive.pose.position.y, drive.pose.heading.real);
+        telemetry.addData("Detected position", position);
+        telemetry.update();
+    }
 }
-
