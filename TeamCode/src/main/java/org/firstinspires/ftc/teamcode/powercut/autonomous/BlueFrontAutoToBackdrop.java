@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.powercut.autonomous;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -20,8 +17,8 @@ import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 @Config
-@Autonomous(name = "BackRedAutoToBackdrop", preselectTeleOp = "Drive")
-public class RedBackAutoToBackdrop extends OpMode {
+@Autonomous(name = "BackBlueAutoToBackdrop", preselectTeleOp = "Drive")
+public class BlueFrontAutoToBackdrop extends OpMode {
     private MecanumDrive drive;
     private VisionSystem visionSystem = new VisionSystem();
     private ArmSystem arm = new ArmSystem();
@@ -34,7 +31,7 @@ public class RedBackAutoToBackdrop extends OpMode {
     private Action park;
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, new Pose2d(12, -63, Math.toRadians(90)));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(12, 63, Math.toRadians(270)));
         arm.init(hardwareMap);
         visionSystem.init(hardwareMap);
         droneSystem.init(hardwareMap);
@@ -52,13 +49,13 @@ public class RedBackAutoToBackdrop extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .lineToY(-30)
-                .turn(Math.toRadians(90))
-                .strafeTo(new Vector2d(54, -30))
+                .lineToY(30)
+                .turn(Math.toRadians(-90))
+                .strafeTo(new Vector2d(54, 30))
                 .build();
 
         park = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(55, -62))
+                .strafeTo(new Vector2d(55, 62))
                 .build();
 
         telemetry.addLine("Init paths. Fully Initialised.");

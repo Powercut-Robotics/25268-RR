@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.powercut.autonomous;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -20,8 +17,8 @@ import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 @Config
-@Autonomous(name = "BackRedAutoToBackdrop", preselectTeleOp = "Drive")
-public class RedBackAutoToBackdrop extends OpMode {
+@Autonomous(name = "FrontRedAutoToBackdrop", preselectTeleOp = "Drive")
+public class RedFrontAutoToBackdrop extends OpMode {
     private MecanumDrive drive;
     private VisionSystem visionSystem = new VisionSystem();
     private ArmSystem arm = new ArmSystem();
@@ -34,7 +31,7 @@ public class RedBackAutoToBackdrop extends OpMode {
     private Action park;
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, new Pose2d(12, -63, Math.toRadians(90)));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(-36, -63, Math.toRadians(90)));
         arm.init(hardwareMap);
         visionSystem.init(hardwareMap);
         droneSystem.init(hardwareMap);
