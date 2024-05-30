@@ -7,9 +7,9 @@ import com.acmerobotics.dashboard.config.Config;
 public class RobotSettings {
     // PID values and integral limits.
 
-    public static PIDCoefficientsEx armUpCoefficients = new PIDCoefficientsEx(0.001, 0.001, 0, 25000, 0, 0);
-    public static PIDCoefficientsEx armDownCoefficients = new PIDCoefficientsEx(0.001, 0.001, 0, 25000, 0, 0);
-    public static PIDCoefficientsEx wristCoefficients = new PIDCoefficientsEx(0.001, 0.01, 0.2, 25.0, 1.0, 0.5);
+    public static PIDCoefficientsEx armUpCoefficients = new PIDCoefficientsEx(0.001, 0.001, 0.001, 25000, 0, 0);
+    public static PIDCoefficientsEx armDownCoefficients = new PIDCoefficientsEx(0.001, 0.001, 0.001, 25000, 0, 0);
+    public static PIDCoefficientsEx wristCoefficients = new PIDCoefficientsEx(0.001, 0, 0, 25.0, 1.0, 0.5);
 
     public static double armDeadband = 5;
     public static double wristDeadband = 5;
@@ -42,6 +42,6 @@ public class RobotSettings {
     public static float[] spikeMark3 = {450, 640};
 
     //vision modifiers
-    public static int[] clippingMargins = {0,150,0,100};
+    public static int[] clippingMargins = {0,0,0,0};
 
 }
