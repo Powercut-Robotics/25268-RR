@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-@Config
+
 @Autonomous(name = "BackRedAutoToBackdrop", preselectTeleOp = "Drive")
 public class RedBackAutoToBackdrop extends OpMode {
     private MecanumDrive drive;
