@@ -52,8 +52,9 @@ public class BlueBackAutoToBackdrop extends OpMode {
                 .strafeTo(new Vector2d(54, 30))
                 .build();
 
-        park = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(55, 12))
+        park = drive.actionBuilder(new Pose2d(54, 30, Math.toRadians(180)))
+                .strafeTo(new Vector2d(54, 6))
+                .strafeTo(new Vector2d(62, 6))
                 .build();
 
         telemetry.addLine("Init paths. Fully Initialised.");
