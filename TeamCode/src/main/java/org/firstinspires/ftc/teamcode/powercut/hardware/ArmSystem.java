@@ -197,6 +197,7 @@ public class ArmSystem {
 
             if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
                 armMotor.setPower(0);
+                packet.put("Arm complete", 1);
                 return false;
             } else {
                 return true;
@@ -229,6 +230,7 @@ public class ArmSystem {
 
             if ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband)) {
                 wristMotor.setPower(0);
+                packet.put("Wrist complete", 1);
                 return false;
             } else {
                 return true;
