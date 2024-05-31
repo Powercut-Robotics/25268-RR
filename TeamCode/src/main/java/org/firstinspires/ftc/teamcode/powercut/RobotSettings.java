@@ -36,12 +36,13 @@ public class RobotSettings {
     public static double totalSpeedModifier = 1.0;
     public static double slowmodeSpeedModifier = 0.2;
 
+    //vision modifiers
     // Game-specific modifiers
     public static float[] spikeMark1 = {0, 200};
     public static float[] spikeMark2 = {0, 640};
     public static float[] spikeMark3 = {450, 640};
 
-    //vision modifiers
+
     public static int[] clippingMargins = {0,0,0,0};
 
 }
