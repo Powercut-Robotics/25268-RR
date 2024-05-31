@@ -58,7 +58,7 @@ public class RedBackAutoToBackdrop extends OpMode {
                 .build();
 
         park = drive.actionBuilder(drive.pose)
-                .strafeTo(new Vector2d(55, -62))
+                .strafeTo(new Vector2d(55, -12))
                 .build();
 
         telemetry.addLine("Init paths. Fully Initialised.");
