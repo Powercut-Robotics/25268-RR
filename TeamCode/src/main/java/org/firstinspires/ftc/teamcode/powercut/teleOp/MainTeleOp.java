@@ -55,6 +55,10 @@ public class MainTeleOp extends OpMode {
         droneSystem.init(hardwareMap);
         visionSystem.init(hardwareMap);
         droneSystem.preset();
+
+        arm.doPresetArm();
+        arm.doPresetWrist();
+
     }
 
 

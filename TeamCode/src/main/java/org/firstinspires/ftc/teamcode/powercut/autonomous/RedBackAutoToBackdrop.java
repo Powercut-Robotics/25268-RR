@@ -53,6 +53,8 @@ public class RedBackAutoToBackdrop extends OpMode {
         telemetry.addLine("Init hardware maps");
         telemetry.update();
 
+        arm.doPresetArm();
+        arm.doPresetWrist();
         arm.gripLeftActivate();
         arm.gripRightActivate();
         droneSystem.preset();

@@ -427,6 +427,29 @@ public class ArmSystem {
     public Action presetWrist() {
         return new PresetWrist();
     }
+
+    public void doPresetArm() {
+        boolean isReset = armResetTouchSensor.isPressed();
+
+        while (!isReset) {
+            armMotor.setPower(0.1);
+            isReset = armResetTouchSensor.isPressed();
+        }
+
+        armMotor.setPower(0);
+    }
+
+    public void doPresetWrist() {
+        boolean isReset = wristResetTouchSensor.isPressed();
+
+        while (!isReset) {
+            wristMotor.setPower(0.1);
+            isReset = wristResetTouchSensor.isPressed();
+        }
+
+        wristMotor.setPower(0);
+    }
+
     public void stop() {
         armMotor.setPower(0);
         wristMotor.setPower(0);
