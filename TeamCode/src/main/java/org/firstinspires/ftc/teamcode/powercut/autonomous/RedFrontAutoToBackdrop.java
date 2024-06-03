@@ -60,29 +60,35 @@ public class RedFrontAutoToBackdrop extends OpMode {
         telemetry.update();
 
         toLeftSpike = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(7, -38), Math.toRadians(135.00))
+                .splineTo(new Vector2d(-41, -38), Math.toRadians(135.00))
                 .build();
 
         toCentreSpike = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(12, -32), Math.toRadians(90))
+                .splineTo(new Vector2d(-36, -32), Math.toRadians(90))
                 .build();
 
         toRightSpike = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(17, -38), Math.toRadians(45))
+                .splineTo(new Vector2d(-31, -38), Math.toRadians(45))
                 .build();
 
-        toLeftBackdrop = drive.actionBuilder(new Pose2d(7, -38, Math.toRadians(135)))
+        toLeftBackdrop = drive.actionBuilder(new Pose2d(-41, -38, Math.toRadians(135)))
                 .turn(Math.toRadians(45))
+                .strafeTo(new Vector2d(-24, -36))
+                .strafeTo(new Vector2d(10, -36))
                 .strafeTo(new Vector2d(51, -29))
                 .build();
 
-        toCentreBackdrop = drive.actionBuilder(new Pose2d(12, -32, Math.toRadians(90)))
+        toCentreBackdrop = drive.actionBuilder(new Pose2d(-36, -32, Math.toRadians(90)))
                 .turn(Math.toRadians(90))
+                .strafeTo(new Vector2d(-24, -36))
+                .strafeTo(new Vector2d(10, -36))
                 .strafeTo(new Vector2d(51, -35))
                 .build();
 
-        toRightBackdrop = drive.actionBuilder(new Pose2d(17, -38, Math.toRadians(45)))
+        toRightBackdrop = drive.actionBuilder(new Pose2d(-31, -38, Math.toRadians(45)))
                 .turn(Math.toRadians(135))
+                .strafeTo(new Vector2d(-24, -36))
+                .strafeTo(new Vector2d(10, -36))
                 .strafeTo(new Vector2d(51, -42))
                 .build();
 

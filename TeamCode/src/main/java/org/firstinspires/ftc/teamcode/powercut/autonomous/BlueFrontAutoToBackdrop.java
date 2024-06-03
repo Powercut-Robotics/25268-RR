@@ -58,45 +58,51 @@ public class BlueFrontAutoToBackdrop extends OpMode {
         telemetry.update();
 
         toLeftSpike = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(7, -38), Math.toRadians(135.00))
+                .splineTo(new Vector2d(-31, 38), Math.toRadians(-45))
                 .build();
 
         toCentreSpike = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(12, -32), Math.toRadians(90))
+                .splineTo(new Vector2d(-36, 32), Math.toRadians(270))
                 .build();
 
         toRightSpike = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(17, -38), Math.toRadians(45))
+                .splineTo(new Vector2d(-45, 38), Math.toRadians(225))
                 .build();
 
-        toLeftBackdrop = drive.actionBuilder(new Pose2d(7, -38, Math.toRadians(135)))
-                .turn(Math.toRadians(45))
-                .strafeTo(new Vector2d(51, -29))
+        toLeftBackdrop = drive.actionBuilder(new Pose2d(-31, 38, Math.toRadians(-45)))
+                .turn(Math.toRadians(-135))
+                .strafeTo(new Vector2d(-24,36))
+                .strafeTo(new Vector2d(-10, 36))
+                .strafeTo(new Vector2d(51, 42))
                 .build();
 
-        toCentreBackdrop = drive.actionBuilder(new Pose2d(12, -32, Math.toRadians(90)))
-                .turn(Math.toRadians(90))
-                .strafeTo(new Vector2d(51, -35))
+        toCentreBackdrop = drive.actionBuilder(new Pose2d(-36, -32, Math.toRadians(270)))
+                .turn(Math.toRadians(-90))
+                .strafeTo(new Vector2d(-24,36))
+                .strafeTo(new Vector2d(-10, 36))
+                .strafeTo(new Vector2d(51, 35))
                 .build();
 
-        toRightBackdrop = drive.actionBuilder(new Pose2d(17, -38, Math.toRadians(45)))
-                .turn(Math.toRadians(135))
-                .strafeTo(new Vector2d(51, -42))
+        toRightBackdrop = drive.actionBuilder(new Pose2d(-45, -38, Math.toRadians(225)))
+                .turn(Math.toRadians(-45))
+                .strafeTo(new Vector2d(-24,36))
+                .strafeTo(new Vector2d(-10, 36))
+                .strafeTo(new Vector2d(51, 29))
                 .build();
 
-        parkFromLeft = drive.actionBuilder(new Pose2d(51, -29, Math.toRadians(180)))
-                .strafeTo(new Vector2d(50, -12))
-                .strafeTo(new Vector2d(60, -12))
+        parkFromLeft = drive.actionBuilder(new Pose2d(51, 42, Math.toRadians(180)))
+                .strafeTo(new Vector2d(50, 9))
+                .strafeTo(new Vector2d(60, 9))
                 .build();
 
-        parkFromCentre = drive.actionBuilder(new Pose2d(51, -35, Math.toRadians(180)))
-                .strafeTo(new Vector2d(50, -12))
-                .strafeTo(new Vector2d(60, -12))
+        parkFromCentre = drive.actionBuilder(new Pose2d(51, 35, Math.toRadians(180)))
+                .strafeTo(new Vector2d(50, 9))
+                .strafeTo(new Vector2d(60, 9))
                 .build();
 
-        parkFromRight = drive.actionBuilder(new Pose2d(51, -42, Math.toRadians(180)))
-                .strafeTo(new Vector2d(50, -12))
-                .strafeTo(new Vector2d(60, -12))
+        parkFromRight = drive.actionBuilder(new Pose2d(51, 29, Math.toRadians(180)))
+                .strafeTo(new Vector2d(50, 9))
+                .strafeTo(new Vector2d(60, 9))
                 .build();
 
 
