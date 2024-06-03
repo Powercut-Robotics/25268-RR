@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 
@@ -19,6 +20,8 @@ public class ArmSystem {
     public DcMotorEx wristMotor = null;
     public Servo gripLeft = null;
     public Servo gripRight = null;
+    public TouchSensor armResetTouchSensor = null;
+    public TouchSensor wristResetTouchSensor = null;
 
     private final RobotSettings settings = new RobotSettings();
 
@@ -33,6 +36,9 @@ public class ArmSystem {
         wristMotor = hardwareMap.get(DcMotorEx.class, "gripPose");
         gripLeft = hardwareMap.get(Servo.class, "gripLeft");
         gripRight = hardwareMap.get(Servo.class, "gripRight");
+        armResetTouchSensor = hardwareMap.get(TouchSensor.class, "armResetSensor");
+        wristResetTouchSensor = hardwareMap.get(TouchSensor.class, "wristResetSensor");
+
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wristMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -118,12 +124,25 @@ public class ArmSystem {
 
     public void gripLeftTuck() { gripLeft.setPosition(0.5); }
 
+    public class GripLeftTuck implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            gripLeftTuck();
+            return false;
+        }
+    }
+    public Action gripLeftTuckAction() {
+        return new GripLeftTuck();
+    }
+
     public void gripRightTuck() { gripRight.setPosition(0.5); }
 
     public void setArmPower(double armPowerRequested) {
-        if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(RobotSettings.armUpperLimit)) && armPowerRequested < 0) {
+        if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(RobotSettings.armUpperLimit)) && armPowerRequested < 0)) {
             armMotor.setPower(0);
-        } else if ((armMotor.getCurrentPosition() > RobotSettings.armLowerLimit) && armPowerRequested > 0) {
+        } else if (((armMotor.getCurrentPosition() > RobotSettings.armLowerLimit) && armPowerRequested > 0)) {
+            armMotor.setPower(0);
+        } else if (armResetTouchSensor.isPressed()) {
             armMotor.setPower(0);
         } else {
             armMotor.setPower(armPowerRequested);
@@ -368,7 +387,46 @@ public class ArmSystem {
     public Action wristToResetPosition() {
         return new WristToResetPosition();
     }
-    
+
+    public class PresetArm implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            boolean isReset = armResetTouchSensor.isPressed();
+
+            if (isReset) {
+                armMotor.setPower(0);
+                return false;
+            } else {
+                armMotor.setPower(0.1);
+                return true;
+            }
+
+        }
+    }
+
+    public Action presetArm() {
+        return new PresetArm();
+    }
+
+    public class PresetWrist implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            boolean isReset = wristResetTouchSensor.isPressed();
+
+            if (isReset) {
+                wristMotor.setPower(0);
+                return false;
+            } else {
+                wristMotor.setPower(0.1);
+                return true;
+            }
+
+        }
+    }
+
+    public Action presetWrist() {
+        return new PresetWrist();
+    }
     public void stop() {
         armMotor.setPower(0);
         wristMotor.setPower(0);

@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.powercut;
 import com.ThermalEquilibrium.homeostasis.Parameters.PIDCoefficientsEx;
 import com.acmerobotics.dashboard.config.Config;
 
+import org.opencv.core.Scalar;
+
 @Config
 public class RobotSettings {
     // PID values and integral limits.
@@ -16,6 +18,9 @@ public class RobotSettings {
 
     public static double armUpperLimit = -4000;
     public static double armLowerLimit = 200;
+
+    public static double armPresetSpeed = 0.1;
+    public static double wristPresetSpeed = 0.1;
 
     // Preset positions
     public static int armUpPosition = -3800;
@@ -38,11 +43,15 @@ public class RobotSettings {
 
     //vision modifiers
     // Game-specific modifiers
-    public static float[] spikeMark1 = {0, 200};
-    public static float[] spikeMark2 = {0, 640};
-    public static float[] spikeMark3 = {450, 640};
+
+    public static Scalar lowerHSV = new Scalar(150, 100, 100); // the lower hsv threshold for your detection
+    public static Scalar upperHSV = new Scalar(180, 255, 255); // the upper hsv threshold for your detection
+    public static double minArea = 100;
+
+    public static double leftLine = 213;
+
+    public static double rightLine = 426;
 
 
-    public static int[] clippingMargins = {0,0,0,0};
 
 }
