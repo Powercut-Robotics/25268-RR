@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
+import org.firstinspires.ftc.teamcode.powercut.hardware.ArmActions;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
@@ -29,6 +30,7 @@ public class MainTeleOp extends OpMode {
     private RobotSettings settings = new RobotSettings();
     private Drivetrain drivetrain = new Drivetrain();
     private ArmSystem arm = new ArmSystem();
+    private ArmActions armActions = new ArmActions();
     public DroneSystem droneSystem = new DroneSystem();
     public VisionSystem visionSystem = new VisionSystem();
 
@@ -126,17 +128,17 @@ public class MainTeleOp extends OpMode {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
-                            arm.armUp(),
-                            arm.wristUp()
+                            armActions.armUp(),
+                            armActions.wristUp()
                     )
             );
         } else if (gamepad2.circle) {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
-                            arm.armDown(),
-                            arm.wristDown(),
-                            arm.gripTuck()
+                            armActions.armDown(),
+                            armActions.wristDown(),
+                            armActions.gripTuck()
                     )
 
             );
@@ -144,9 +146,9 @@ public class MainTeleOp extends OpMode {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
-                            arm.armDown(),
-                            arm.wristDown(),
-                            arm.gripRelease()
+                            armActions.armDown(),
+                            armActions.wristDown(),
+                            armActions.gripRelease()
                     )
             );
         } else if (gamepad2.square) {

@@ -14,6 +14,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.powercut.hardware.ArmActions;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.powercut.vision.ColourMassDetectionProcessor;
@@ -27,6 +28,7 @@ public class RedBackAutoToBackdrop extends OpMode {
     private MecanumDrive drive;
     private VisionSystem visionSystem = new VisionSystem();
     private ArmSystem arm = new ArmSystem();
+    private ArmActions armActions = new ArmActions();
     private DroneSystem droneSystem = new DroneSystem();
 
     //Paths
@@ -117,6 +119,7 @@ public class RedBackAutoToBackdrop extends OpMode {
         telemetry.addData("Camera State", visionSystem.visionSystem.getCameraState());
         telemetry.addData("Currently Detected Mass Center", "x: " + visionSystem.colourMassDetectionProcessor.getLargestContourX() + ", y: " + visionSystem.colourMassDetectionProcessor.getLargestContourY());
         telemetry.addData("Currently Detected Mass Area", visionSystem.colourMassDetectionProcessor.getLargestContourArea());
+        telemetry.update();
     }
     @Override
     public void start() {
@@ -141,57 +144,57 @@ public class RedBackAutoToBackdrop extends OpMode {
                 Actions.runBlocking(new SequentialAction(
                         new SleepAction(0.5),
                         toLeftSpike,
-                        arm.armDown(),
-                        arm.gripLeftTuckAction(),
+                        armActions.armDown(),
+                        armActions.gripLeftTuckAction(),
                         new SleepAction(0.5),
                         toLeftBackdrop,
                         new SleepAction(0.5),
                         new ParallelAction(
-                                arm.armUp(),
-                                arm.wristUp()
+                                armActions.armUp(),
+                                armActions.wristUp()
                         ),
                         new SleepAction(0.5),
-                        arm.gripTuck(),
+                        armActions.gripTuck(),
                         new SleepAction(0.5),
-                        new ParallelAction(arm.armToResetPosition(), arm.wristToResetPosition(), arm.gripRelease(), parkFromLeft)
+                        new ParallelAction(armActions.armToResetPosition(), armActions.wristToResetPosition(), armActions.gripRelease(), parkFromLeft)
                 ));
                 break;
             case MIDDLE:
                 Actions.runBlocking(new SequentialAction(
                         new SleepAction(0.5),
                         toCentreSpike,
-                        arm.armDown(),
-                        arm.gripLeftTuckAction(),
+                        armActions.armDown(),
+                        armActions.gripLeftTuckAction(),
                         new SleepAction(0.5),
                         toCentreBackdrop,
                         new SleepAction(0.5),
                         new ParallelAction(
-                                arm.armUp(),
-                                arm.wristUp()
+                                armActions.armUp(),
+                                armActions.wristUp()
                         ),
                         new SleepAction(0.5),
-                        arm.gripTuck(),
+                        armActions.gripTuck(),
                         new SleepAction(0.5),
-                        new ParallelAction(arm.armToResetPosition(), arm.wristToResetPosition(), arm.gripRelease(), parkFromCentre)
+                        new ParallelAction(armActions.armToResetPosition(), armActions.wristToResetPosition(), armActions.gripRelease(), parkFromCentre)
                 ));
                 break;
             case RIGHT:
                 Actions.runBlocking(new SequentialAction(
                         new SleepAction(0.5),
                         toRightSpike,
-                        arm.armDown(),
-                        arm.gripLeftTuckAction(),
+                        armActions.armDown(),
+                        armActions.gripLeftTuckAction(),
                         new SleepAction(0.5),
                         toRightBackdrop,
                         new SleepAction(0.5),
                         new ParallelAction(
-                                arm.armUp(),
-                                arm.wristUp()
+                                armActions.armUp(),
+                                armActions.wristUp()
                         ),
                         new SleepAction(0.5),
-                        arm.gripTuck(),
+                        armActions.gripTuck(),
                         new SleepAction(0.5),
-                        new ParallelAction(arm.armToResetPosition(), arm.wristToResetPosition(), arm.gripRelease(), parkFromRight)
+                        new ParallelAction(armActions.armToResetPosition(), armActions.wristToResetPosition(), armActions.gripRelease(), parkFromRight)
                 ));
                 break;
         }
