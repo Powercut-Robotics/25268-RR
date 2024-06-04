@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.powercut.hardware;
 
-import androidx.annotation.NonNull;
 
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -23,7 +20,7 @@ public class ArmSystem {
     public TouchSensor armResetTouchSensor = null;
     public TouchSensor wristResetTouchSensor = null;
 
-    protected PIDEx armPID = new PIDEx(RobotSettings.armDownCoefficients);
+    protected PIDEx armPID = new PIDEx(RobotSettings.armCoefficients);
     protected PIDEx wristPID = new PIDEx(RobotSettings.wristCoefficients);
 
 
@@ -90,7 +87,7 @@ public class ArmSystem {
     public void gripRightTuck() { gripRight.setPosition(0.5); }
 
     public void setArmPower(double armPowerRequested) {
-        if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(RobotSettings.armUpperLimit)) && armPowerRequested < 0)) {
+        if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(RobotSettings.armLimit)) && armPowerRequested < 0)) {
             armMotor.setPower(0);
         } else if (armResetTouchSensor.isPressed()) {
             resetArmEncoder();

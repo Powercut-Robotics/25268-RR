@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.powercut.hardware;
 
 import androidx.annotation.NonNull;
 
-import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 
@@ -123,11 +122,6 @@ public class ArmActions extends ArmSystem {
     }
 
 
-    // set grip
-    public void gripLeftActivate() {
-        gripLeft.setPosition(0.09);
-    }
-
     public class GripLeftActivate implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -135,15 +129,10 @@ public class ArmActions extends ArmSystem {
             return false;
         }
     }
-
     public Action gripLeftActivateAction() {
         return new GripLeftActivate();
     }
 
-
-    public void gripRightActivate() {
-        gripRight.setPosition(0.09);
-    }
 
     public class GripRightActivate implements Action {
         @Override
@@ -152,15 +141,10 @@ public class ArmActions extends ArmSystem {
             return false;
         }
     }
-
     public Action gripRightActivateAction() {
         return new GripRightActivate();
     }
 
-
-    public void gripLeftRelease() {
-        gripLeft.setPosition(0.15);
-    }
 
     public class GripLeftRelease implements Action {
         @Override
@@ -169,15 +153,10 @@ public class ArmActions extends ArmSystem {
             return false;
         }
     }
-
     public Action gripLeftReleaseAction() {
         return new GripLeftRelease();
     }
 
-
-    public void gripRightRelease() {
-        gripRight.setPosition(0.15);
-    }
 
     public class GripRightRelease implements Action {
         @Override
@@ -186,14 +165,10 @@ public class ArmActions extends ArmSystem {
             return false;
         }
     }
-
     public Action gripRightReleaseAction() {
-        return new GripLeftRelease();
+        return new GripRightRelease();
     }
 
-    public void gripLeftTuck() {
-        gripLeft.setPosition(0.5);
-    }
 
     public class GripLeftTuck implements Action {
         @Override
@@ -202,14 +177,10 @@ public class ArmActions extends ArmSystem {
             return false;
         }
     }
-
     public Action gripLeftTuckAction() {
         return new GripLeftTuck();
     }
 
-    public void gripRightTuck() {
-        gripRight.setPosition(0.5);
-    }
 
     public class GripRightTuck implements Action {
         @Override
@@ -218,7 +189,6 @@ public class ArmActions extends ArmSystem {
             return false;
         }
     }
-
     public Action gripRightTuckAction() {
         return new GripRightTuck();
     }
@@ -278,7 +248,7 @@ public class ArmActions extends ArmSystem {
             armPower = armPID.calculate(armTarget, armPos);
             packet.put("armPower", armPower);
 
-            armMotor.setPower(armPower);
+            setArmPower(armPower);
 
 
             if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
@@ -311,7 +281,7 @@ public class ArmActions extends ArmSystem {
             wristPower = wristPID.calculate(wristTarget, wristPos);
             packet.put("wristPower", wristPower);
 
-            wristMotor.setPower(wristPower);
+            setWristPower(wristPower);
 
             if ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband)) {
                 wristMotor.setPower(0);
@@ -345,7 +315,7 @@ public class ArmActions extends ArmSystem {
                 armPower = armPID.calculate(armTarget, armPos);
                 packet.put("armPower", armPower);
 
-                armMotor.setPower(armPower);
+                setArmPower(armPower);
 
                 if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
                     armMotor.setPower(0);
@@ -375,7 +345,7 @@ public class ArmActions extends ArmSystem {
             wristPower = wristPID.calculate(wristTarget, wristPos);
             packet.put("wristPower", wristPower);
 
-            wristMotor.setPower(wristPower);
+            setWristPower(wristPower);
 
             if ((Math.abs(wristMotor.getCurrentPosition()) > Math.abs(wristTarget) - RobotSettings.wristDeadband) && (Math.abs(wristMotor.getCurrentPosition()) < Math.abs(wristTarget) + RobotSettings.wristDeadband)) {
                 wristMotor.setPower(0);
