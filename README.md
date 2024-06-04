@@ -8,5 +8,5 @@ Forked from the Road Runner Quickstart.
 - [x] - Path FrontBlue Auton
 - [x] - Path FrontRed Auton
 - [x] - Add reset sensors
-- [ ] - Add safety sensors
+- [x] - Add safety sensors
 - [ ] - Tune OpenCV
