@@ -19,7 +19,7 @@ public class ArmActions extends ArmSystem {
                 resetArmEncoder();
                 return false;
             } else {
-                armMotor.setPower(0.4);
+                armMotor.setPower(RobotSettings.armPresetSpeed);
                 return true;
             }
 
@@ -40,7 +40,7 @@ public class ArmActions extends ArmSystem {
                 resetWristEncoder();
                 return false;
             } else {
-                wristMotor.setPower(0.1);
+                wristMotor.setPower(RobotSettings.wristPresetSpeed);
                 return true;
             }
 

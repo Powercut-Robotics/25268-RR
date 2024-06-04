@@ -155,7 +155,7 @@ public class BlueFrontAutoToBackdrop extends OpMode {
                         new SleepAction(0.5),
                         armActions.gripTuck(),
                         new SleepAction(0.5),
-                        new ParallelAction(armActions.armToResetPosition(), armActions.wristToResetPosition(), armActions.gripRelease(), parkFromLeft)
+                        new ParallelAction(armActions.presetArm(), armActions.presetWrist(), armActions.gripRelease(), parkFromLeft)
                 ));
                 break;
             case MIDDLE:
@@ -174,7 +174,7 @@ public class BlueFrontAutoToBackdrop extends OpMode {
                         new SleepAction(0.5),
                         armActions.gripTuck(),
                         new SleepAction(0.5),
-                        new ParallelAction(armActions.armToResetPosition(), armActions.wristToResetPosition(), armActions.gripRelease(), parkFromCentre)
+                        new ParallelAction(armActions.presetArm(), armActions.presetWrist(), armActions.gripRelease(), parkFromCentre)
                 ));
                 break;
             case RIGHT:
@@ -193,7 +193,7 @@ public class BlueFrontAutoToBackdrop extends OpMode {
                         new SleepAction(0.5),
                         armActions.gripTuck(),
                         new SleepAction(0.5),
-                        new ParallelAction(armActions.armToResetPosition(), armActions.wristToResetPosition(), armActions.gripRelease(), parkFromRight)
+                        new ParallelAction(armActions.presetArm(), armActions.presetWrist(), armActions.gripRelease(), parkFromRight)
                 ));
                 break;
         }

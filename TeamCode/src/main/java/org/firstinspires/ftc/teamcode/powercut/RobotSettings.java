@@ -19,7 +19,7 @@ public class RobotSettings {
     public static double armUpperLimit = -4000;
     public static double armLowerLimit = 200;
 
-    public static double armPresetSpeed = 0.1;
+    public static double armPresetSpeed = 0.4;
     public static double wristPresetSpeed = 0.1;
 
     // Preset positions

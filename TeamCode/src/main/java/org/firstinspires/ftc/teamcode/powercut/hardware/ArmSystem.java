@@ -110,7 +110,7 @@ public class ArmSystem {
         boolean isReset = armResetTouchSensor.isPressed();
 
         while (!isReset) {
-            armMotor.setPower(0.1);
+            armMotor.setPower(RobotSettings.armPresetSpeed);
             isReset = armResetTouchSensor.isPressed();
         }
 
@@ -121,7 +121,7 @@ public class ArmSystem {
         boolean isReset = wristResetTouchSensor.isPressed();
 
         while (!isReset) {
-            wristMotor.setPower(0.1);
+            wristMotor.setPower(RobotSettings.wristPresetSpeed);
             isReset = wristResetTouchSensor.isPressed();
         }
 
