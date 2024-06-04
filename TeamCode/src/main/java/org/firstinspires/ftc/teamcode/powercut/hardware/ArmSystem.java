@@ -92,9 +92,8 @@ public class ArmSystem {
     public void setArmPower(double armPowerRequested) {
         if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(RobotSettings.armUpperLimit)) && armPowerRequested < 0)) {
             armMotor.setPower(0);
-        } else if (((armMotor.getCurrentPosition() > RobotSettings.armLowerLimit) && armPowerRequested > 0)) {
-            armMotor.setPower(0);
         } else if (armResetTouchSensor.isPressed()) {
+            resetArmEncoder();
             armMotor.setPower(0);
         } else {
             armMotor.setPower(armPowerRequested);
@@ -103,7 +102,15 @@ public class ArmSystem {
     }
 
     public void setWristPower(double wristPowerRequested) {
-        wristMotor.setPower(wristPowerRequested);
+        if (wristResetTouchSensor.isPressed()) {
+            resetWristEncoder();
+        }
+
+        if ((wristPowerRequested < 0) && wristResetTouchSensor.isPressed()) {
+            wristMotor.setPower(0);
+        } else {
+            wristMotor.setPower(wristPowerRequested);
+        }
     }
 
     public void doPresetArm() {
