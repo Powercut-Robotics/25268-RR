@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.powercut.hardware;
 import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -19,6 +20,7 @@ public class ArmSystem {
     public Servo gripRight = null;
     public TouchSensor armResetTouchSensor = null;
     public TouchSensor wristResetTouchSensor = null;
+    public DigitalChannel armLimitSensor = null;
 
     protected PIDEx armPID = new PIDEx(RobotSettings.armCoefficients);
     protected PIDEx wristPID = new PIDEx(RobotSettings.wristCoefficients);
@@ -32,6 +34,9 @@ public class ArmSystem {
         gripRight = hardwareMap.get(Servo.class, "gripRight");
         armResetTouchSensor = hardwareMap.get(TouchSensor.class, "armResetSensor");
         wristResetTouchSensor = hardwareMap.get(TouchSensor.class, "wristResetSensor");
+        armLimitSensor = hardwareMap.get(DigitalChannel.class, "armLimitSensor");
+
+        armLimitSensor.setMode(DigitalChannel.Mode.INPUT);
 
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -45,6 +50,10 @@ public class ArmSystem {
 
 
 
+    }
+
+    protected boolean armLimitIsReached() {
+        return armLimitSensor.getState();
     }
 
     public void resetEncoders() {
@@ -87,10 +96,13 @@ public class ArmSystem {
     public void gripRightTuck() { gripRight.setPosition(0.5); }
 
     public void setArmPower(double armPowerRequested) {
-        if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(RobotSettings.armLimit)) && armPowerRequested < 0)) {
-            armMotor.setPower(0);
-        } else if (armResetTouchSensor.isPressed()) {
+
+        if (armResetTouchSensor.isPressed()) {
             resetArmEncoder();
+        }
+        if (armResetTouchSensor.isPressed() && armPowerRequested > 0) {
+            armMotor.setPower(0);
+        } else if (armLimitIsReached() && armPowerRequested < 0) {
             armMotor.setPower(0);
         } else {
             armMotor.setPower(armPowerRequested);
@@ -103,7 +115,7 @@ public class ArmSystem {
             resetWristEncoder();
         }
 
-        if ((wristPowerRequested < 0) && wristResetTouchSensor.isPressed()) {
+        if ((wristPowerRequested > 0) && wristResetTouchSensor.isPressed()) {
             wristMotor.setPower(0);
         } else {
             wristMotor.setPower(wristPowerRequested);

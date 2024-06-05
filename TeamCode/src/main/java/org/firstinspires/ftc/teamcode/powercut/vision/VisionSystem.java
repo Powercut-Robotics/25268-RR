@@ -50,8 +50,6 @@ public class VisionSystem {
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .addProcessors(aprilTagProcessor, colourMassDetectionProcessor)
                 .build();
-
-        // visionSystem.setProcessorEnabled(TfodProcessor, false);
     }
 
     public List<AprilTagDetection> getAprilTags() {

@@ -45,7 +45,7 @@ public class MainTeleOp extends OpMode {
         drivetrain.init(hardwareMap);
         arm.init(hardwareMap);
         droneSystem.init(hardwareMap);
-        visionSystem.init(hardwareMap);
+       // visionSystem.init(hardwareMap);
         droneSystem.preset();
     }
 
@@ -163,20 +163,20 @@ public class MainTeleOp extends OpMode {
     private void updateTelemetry(){
         endgameCheck();
 
-        List<AprilTagDetection> detections = visionSystem.getAprilTags();
-
-        for (AprilTagDetection detection : detections) {
-            try {
-                telemetry.addData("===== Detected ID", detection.id);
-                telemetry.addData("Pose", "%4.2f, %4.2f, %5.2f, %5.2f", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.yaw, detection.ftcPose.bearing);
-                telemetry.addData("Distance", detection.ftcPose.range);
-                telemetry.addData("Name", detection.metadata.name);
-                telemetry.addData("Field Pos", "%4.2f, %4.2f", detection.metadata.fieldPosition.get(0), detection.metadata.fieldPosition.get(1));
-            } catch (Exception e) {
-                telemetry.addData("Error:", e.getMessage());
-            }
-
-        }
+//        List<AprilTagDetection> detections = visionSystem.getAprilTags();
+//
+//        for (AprilTagDetection detection : detections) {
+//            try {
+//                telemetry.addData("===== Detected ID", detection.id);
+//                telemetry.addData("Pose", "%4.2f, %4.2f, %5.2f, %5.2f", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.yaw, detection.ftcPose.bearing);
+//                telemetry.addData("Distance", detection.ftcPose.range);
+//                telemetry.addData("Name", detection.metadata.name);
+//                telemetry.addData("Field Pos", "%4.2f, %4.2f", detection.metadata.fieldPosition.get(0), detection.metadata.fieldPosition.get(1));
+//            } catch (Exception e) {
+//                telemetry.addData("Error:", e.getMessage());
+//            }
+//
+//        }
 
         double[] powers = drivetrain.getPowers();
         //sys mon
