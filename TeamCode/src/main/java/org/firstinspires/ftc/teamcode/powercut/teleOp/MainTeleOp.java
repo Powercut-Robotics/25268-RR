@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.powercut.teleOp;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
+import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
 import com.acmerobotics.roadrunner.ParallelAction;
+import com.acmerobotics.roadrunner.SleepAction;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -16,6 +16,10 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +27,7 @@ import java.util.List;
 @TeleOp(name="Drive")
 public class MainTeleOp extends OpMode {
     // Declaring the system
+    private RobotSettings settings = new RobotSettings();
     private Drivetrain drivetrain = new Drivetrain();
     private ArmSystem arm = new ArmSystem();
     private ArmActions armActions = new ArmActions();
@@ -40,13 +45,18 @@ public class MainTeleOp extends OpMode {
     private List<Action> runningActions = new ArrayList<>();
 
 
+    //sys mon
+    private double armPos = 0.0;
+    private double wristPos = 0.0;
+
+
     @Override
     public void init() {
         drivetrain.init(hardwareMap);
         arm.init(hardwareMap);
         droneSystem.init(hardwareMap);
        // visionSystem.init(hardwareMap);
-        droneSystem.preset();
+
     }
 
 
@@ -54,6 +64,8 @@ public class MainTeleOp extends OpMode {
     public void start() {
         arm.doPresetArm();
         arm.doPresetWrist();
+        droneSystem.preset();
+
         runtime.reset();
     }
 
@@ -179,9 +191,8 @@ public class MainTeleOp extends OpMode {
 //        }
 
         double[] powers = drivetrain.getPowers();
-        //sys mon
-        double armPos = arm.armMotor.getCurrentPosition();
-        double wristPos = arm.wristMotor.getCurrentPosition();
+        armPos = arm.armMotor.getCurrentPosition();
+        wristPos = arm.wristMotor.getCurrentPosition();
 
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("Arm Position", armPos);
@@ -201,8 +212,8 @@ public class MainTeleOp extends OpMode {
         if (runtime.seconds() > 90 && runtime.seconds() < 90.1){
             isEndGame = true;
 
-            gamepad1.rumble(RobotSettings.endgameRumbleTime);
-            gamepad2.rumble(RobotSettings.endgameRumbleTime);
+            gamepad1.rumble(settings.endgameRumbleTime);
+            gamepad2.rumble(settings.endgameRumbleTime);
 
             gamepad1.setLedColor(255.0, 0.0,0.0, 30000);
             gamepad2.setLedColor(255.0, 0.0, 0.0, 30000);

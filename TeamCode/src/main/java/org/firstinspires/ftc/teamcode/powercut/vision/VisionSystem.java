@@ -5,6 +5,7 @@ import android.util.Size;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -19,6 +20,7 @@ import java.util.List;
 public class VisionSystem {
     public VisionPortal visionSystem;
     private AprilTagProcessor aprilTagProcessor;
+    private TfodProcessor TfodProcessor;
     public ColourMassDetectionProcessor colourMassDetectionProcessor;
 
 
