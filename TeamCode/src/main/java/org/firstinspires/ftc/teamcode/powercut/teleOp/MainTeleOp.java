@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.powercut.teleOp;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,11 +12,6 @@ import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
-import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
-
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +24,6 @@ public class MainTeleOp extends OpMode {
     private Drivetrain drivetrain = new Drivetrain();
     private ArmSystem arm = new ArmSystem();
     public DroneSystem droneSystem = new DroneSystem();
-    public VisionSystem visionSystem = new VisionSystem();
 
 
     // Game monitoring
@@ -40,17 +36,11 @@ public class MainTeleOp extends OpMode {
     private List<Action> runningActions = new ArrayList<>();
 
 
-    //sys mon
-    private double armPos = 0.0;
-    private double wristPos = 0.0;
-
-
     @Override
     public void init() {
         drivetrain.init(hardwareMap);
         arm.init(hardwareMap);
         droneSystem.init(hardwareMap);
-       // visionSystem.init(hardwareMap);
 
         telemetry.addLine("Initalised");
         telemetry.update();
@@ -166,7 +156,7 @@ public class MainTeleOp extends OpMode {
 
     private double getSpeedModifier(){
         double speedMultiplier = RobotSettings.totalSpeedModifier;
-        if (gamepad1.left_bumper || gamepad1.right_bumper) {
+        if (gamepad1.left_bumper || gamepad1.right_bumper || gamepad1.left_stick_button || gamepad1.right_stick_button) {
             speedMultiplier = RobotSettings.slowmodeSpeedModifier;
         }
 
@@ -175,24 +165,10 @@ public class MainTeleOp extends OpMode {
     private void updateTelemetry(){
         endgameCheck();
 
-//        List<AprilTagDetection> detections = visionSystem.getAprilTags();
-//
-//        for (AprilTagDetection detection : detections) {
-//            try {
-//                telemetry.addData("===== Detected ID", detection.id);
-//                telemetry.addData("Pose", "%4.2f, %4.2f, %5.2f, %5.2f", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.yaw, detection.ftcPose.bearing);
-//                telemetry.addData("Distance", detection.ftcPose.range);
-//                telemetry.addData("Name", detection.metadata.name);
-//                telemetry.addData("Field Pos", "%4.2f, %4.2f", detection.metadata.fieldPosition.get(0), detection.metadata.fieldPosition.get(1));
-//            } catch (Exception e) {
-//                telemetry.addData("Error:", e.getMessage());
-//            }
-//
-//        }
-
         double[] powers = drivetrain.getPowers();
-        armPos = arm.armMotor.getCurrentPosition();
-        wristPos = arm.wristMotor.getCurrentPosition();
+        //sys mon
+        double armPos = arm.armMotor.getCurrentPosition();
+        double wristPos = arm.wristMotor.getCurrentPosition();
 
         TelemetryPacket packet = new TelemetryPacket();
         packet.put("Arm Position", armPos);
