@@ -59,8 +59,8 @@ public class MainTeleOp extends OpMode {
     public void start() {
         arm.doPresetArm();
         arm.doPresetWrist();
-        arm.gripLeftActivate();
-        arm.gripRightActivate();
+        arm.gripLeftRelease();
+        arm.gripRightRelease();
         droneSystem.preset();
 
         runtime.reset();
