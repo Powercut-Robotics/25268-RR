@@ -52,15 +52,18 @@ public class MainTeleOp extends OpMode {
         droneSystem.init(hardwareMap);
        // visionSystem.init(hardwareMap);
 
+        telemetry.addLine("Initalised");
+        telemetry.update();
+
     }
 
 
     @Override
     public void start() {
-        arm.doPresetArm();
-        arm.doPresetWrist();
         arm.gripLeftRelease();
         arm.gripRightRelease();
+        arm.doPresetArm();
+        arm.doPresetWrist();
         droneSystem.preset();
 
         runtime.reset();

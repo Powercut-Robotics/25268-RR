@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.powercut.autonomous;
+package org.firstinspires.ftc.teamcode.powercut.autonomous.cv;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
@@ -17,8 +17,8 @@ import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 
-@Autonomous(name = "FrontBlueAutoToBackdrop", preselectTeleOp = "Drive")
-public class BlueFrontAutoToBackdrop extends OpMode {
+@Autonomous(name = "CVFrontBlueAuto", preselectTeleOp = "Drive")
+public class BlueFrontAutoCV extends OpMode {
     private MecanumDrive drive;
     private VisionSystem visionSystem = new VisionSystem();
     private ArmSystem arm = new ArmSystem();

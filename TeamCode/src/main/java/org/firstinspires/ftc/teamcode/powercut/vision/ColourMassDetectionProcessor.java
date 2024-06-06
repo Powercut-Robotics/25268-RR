@@ -265,6 +265,6 @@ public class ColourMassDetectionProcessor implements VisionProcessor, CameraStre
         LEFT,
         MIDDLE,
         RIGHT,
-        UNFOUND;
+        UNFOUND
     }
 }
