@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
-import org.firstinspires.ftc.teamcode.powercut.hardware.ArmActions;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
@@ -16,7 +15,6 @@ public class Test extends OpMode {
     private MecanumDrive drive;
     private VisionSystem visionSystem = new VisionSystem();
     private ArmSystem arm = new ArmSystem();
-    private ArmActions armActions = new ArmActions();
     private DroneSystem droneSystem = new DroneSystem();
     @Override
     public void init() {

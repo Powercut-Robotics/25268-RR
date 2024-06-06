@@ -1,20 +1,16 @@
 package org.firstinspires.ftc.teamcode.powercut.teleOp;
 
-import com.ThermalEquilibrium.homeostasis.Controllers.Feedback.PIDEx;
 import com.acmerobotics.roadrunner.ParallelAction;
-import com.acmerobotics.roadrunner.SleepAction;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.powercut.RobotSettings;
-import org.firstinspires.ftc.teamcode.powercut.hardware.ArmActions;
 import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.Drivetrain;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.powercut.vision.VisionSystem;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -30,7 +26,6 @@ public class MainTeleOp extends OpMode {
     private RobotSettings settings = new RobotSettings();
     private Drivetrain drivetrain = new Drivetrain();
     private ArmSystem arm = new ArmSystem();
-    private ArmActions armActions = new ArmActions();
     public DroneSystem droneSystem = new DroneSystem();
     public VisionSystem visionSystem = new VisionSystem();
 
@@ -64,6 +59,8 @@ public class MainTeleOp extends OpMode {
     public void start() {
         arm.doPresetArm();
         arm.doPresetWrist();
+        arm.gripLeftActivate();
+        arm.gripRightActivate();
         droneSystem.preset();
 
         runtime.reset();
@@ -128,17 +125,17 @@ public class MainTeleOp extends OpMode {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
-                            armActions.armUp(),
-                            armActions.wristUp()
+                            arm.armUp(),
+                            arm.wristUp()
                     )
             );
         } else if (gamepad2.circle) {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
-                            armActions.armDown(),
-                            armActions.wristDown(),
-                            armActions.gripTuck()
+                            arm.armDown(),
+                            arm.wristDown(),
+                            arm.gripTuck()
                     )
 
             );
@@ -146,9 +143,9 @@ public class MainTeleOp extends OpMode {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
-                            armActions.armDown(),
-                            armActions.wristDown(),
-                            armActions.gripRelease()
+                            arm.armDown(),
+                            arm.wristDown(),
+                            arm.gripRelease()
                     )
             );
         } else if (gamepad2.square) {
