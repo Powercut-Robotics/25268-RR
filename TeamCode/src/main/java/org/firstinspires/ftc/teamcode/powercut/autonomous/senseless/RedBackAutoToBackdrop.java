@@ -74,7 +74,7 @@ public class RedBackAutoToBackdrop extends OpMode {
               new SleepAction(1),
               arm.gripTuck(),
               new SleepAction(1),
-              new ParallelAction(arm.armToResetPosition(), arm.wristToResetPosition(), arm.gripRelease(), park)
+              new ParallelAction(arm.presetArm(), arm.presetWrist(), arm.gripRelease(), park)
       ));
 
         // to backdrop
