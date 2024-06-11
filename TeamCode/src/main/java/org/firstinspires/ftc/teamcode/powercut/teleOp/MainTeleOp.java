@@ -50,10 +50,10 @@ public class MainTeleOp extends OpMode {
 
     @Override
     public void start() {
-        arm.gripLeftRelease();
-        arm.gripRightRelease();
-        arm.doPresetArm();
+        arm.gripLeftTuck();
+        arm.gripRightTuck();
         arm.doPresetWrist();
+        arm.doPresetArm();
         droneSystem.preset();
 
         runtime.reset();
@@ -126,7 +126,7 @@ public class MainTeleOp extends OpMode {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
-                            arm.armDown(),
+                            arm.presetArm(),
                             arm.wristDown(),
                             arm.gripTuck()
                     )
@@ -136,9 +136,9 @@ public class MainTeleOp extends OpMode {
             runningActions.clear();
             runningActions.add(
                     new ParallelAction(
-                            arm.armDown(),
+                            arm.presetArm(),
                             arm.wristDown(),
-                            arm.gripRelease()
+                            arm.gripTuck()
                     )
             );
         } else if (gamepad2.square) {

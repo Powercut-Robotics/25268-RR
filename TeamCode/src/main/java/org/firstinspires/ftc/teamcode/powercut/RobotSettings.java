@@ -18,16 +18,16 @@ public class RobotSettings {
 
     public static double armLimit = -4000;
 
-    public static double armPresetSpeed = 0.75;
+    public static double armPresetSpeed = 1.0;
     public static double wristPresetSpeed = 0.5;
 
     // Preset positions
-    public static int armUpPosition = -3500;
-    public static int  wristUpPosition = 0;
+    public static int armUpPosition = -3450;
+    public static int  wristUpPosition = -70;
 
 
-    public static int armDownPosition = 0;
-    public static int wristDownPosition = -102;
+    public static int armDownPosition = 50;
+    public static int wristDownPosition = -100;
 
     // Gamepad settings
 

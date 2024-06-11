@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.powercut.autonomous.senseless;
+package org.firstinspires.ftc.teamcode.powercut.autonomous;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
@@ -14,8 +14,9 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-@Autonomous(name = "FrontBlueAutoToBackdrop", preselectTeleOp = "Drive")
-public class BlueFrontAutoToBackdrop extends OpMode {
+
+@Autonomous(name = "BackRedAutoToBackdrop", preselectTeleOp = "Drive")
+public class RedBackAutoToBackdrop extends OpMode {
     private MecanumDrive drive;
     private ArmSystem arm = new ArmSystem();
     private DroneSystem droneSystem = new DroneSystem();
@@ -26,7 +27,7 @@ public class BlueFrontAutoToBackdrop extends OpMode {
     private Action park;
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, new Pose2d(-36, 63, Math.toRadians(270)));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(12, -63, Math.toRadians(90)));
         arm.init(hardwareMap);
         droneSystem.init(hardwareMap);
 
@@ -45,16 +46,15 @@ public class BlueFrontAutoToBackdrop extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .lineToY(36)
-                .turn(Math.toRadians(-90))
-                .strafeTo(new Vector2d(52, 36))
+                .lineToY(-36)
+                .turn(Math.toRadians(90))
+                .strafeTo(new Vector2d(52, -36))
                 .build();
 
-        park = drive.actionBuilder(new Pose2d(52, 36, Math.toRadians(180)))
-                .strafeTo(new Vector2d(52, 6))
-                .strafeTo(new Vector2d(62, 6))
+        park = drive.actionBuilder(new Pose2d(52, -36, Math.toRadians(180)))
+                .strafeTo(new Vector2d(52, -6))
+                .strafeTo(new Vector2d(62, -6))
                 .build();
-
 
         telemetry.addLine("Init paths. Fully Initialised.");
         telemetry.update();

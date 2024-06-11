@@ -229,7 +229,7 @@ public class ArmSystem {
 
                 setArmPower(armPower);
 
-                if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
+                if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) || armResetTouchSensor.isPressed()) {
                     armMotor.setPower(0);
                     return false;
                 } else {

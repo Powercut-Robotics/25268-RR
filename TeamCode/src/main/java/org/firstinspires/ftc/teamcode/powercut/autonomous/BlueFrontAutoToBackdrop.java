@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode.powercut.autonomous.senseless;
+package org.firstinspires.ftc.teamcode.powercut.autonomous;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -15,9 +14,8 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-@Config
-@Autonomous(name = "FrontRedAutoToBackdrop", preselectTeleOp = "Drive")
-public class RedFrontAutoToBackdrop extends OpMode {
+@Autonomous(name = "FrontBlueAutoToBackdrop", preselectTeleOp = "Drive")
+public class BlueFrontAutoToBackdrop extends OpMode {
     private MecanumDrive drive;
     private ArmSystem arm = new ArmSystem();
     private DroneSystem droneSystem = new DroneSystem();
@@ -28,7 +26,7 @@ public class RedFrontAutoToBackdrop extends OpMode {
     private Action park;
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, new Pose2d(-36, -63, Math.toRadians(90)));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(-36, 63, Math.toRadians(270)));
         arm.init(hardwareMap);
         droneSystem.init(hardwareMap);
 
@@ -47,14 +45,14 @@ public class RedFrontAutoToBackdrop extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .lineToY(-36)
-                .turn(Math.toRadians(90))
-                .strafeTo(new Vector2d(52, -36))
+                .lineToY(36)
+                .turn(Math.toRadians(-90))
+                .strafeTo(new Vector2d(52, 36))
                 .build();
 
-        park = drive.actionBuilder(new Pose2d(52, -36, Math.toRadians(180)))
-                .strafeTo(new Vector2d(52, -6))
-                .strafeTo(new Vector2d(62, -6))
+        park = drive.actionBuilder(new Pose2d(52, 36, Math.toRadians(180)))
+                .strafeTo(new Vector2d(52, 6))
+                .strafeTo(new Vector2d(62, 6))
                 .build();
 
 
