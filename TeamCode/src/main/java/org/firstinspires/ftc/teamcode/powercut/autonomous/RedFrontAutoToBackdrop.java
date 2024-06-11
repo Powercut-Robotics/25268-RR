@@ -35,11 +35,12 @@ public class RedFrontAutoToBackdrop extends OpMode {
         telemetry.addLine("Init hardware maps");
         telemetry.update();
 
-        arm.gripLeftActivate();
-        arm.gripRightActivate();
         droneSystem.preset();
         arm.doPresetArm();
         arm.doPresetWrist();
+
+        arm.gripLeftActivate();
+        arm.gripRightActivate();
 
         telemetry.addLine("Init hardware positions");
         telemetry.update();
@@ -47,13 +48,14 @@ public class RedFrontAutoToBackdrop extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .lineToY(-36)
+                .lineToY(-12)
                 .turn(Math.toRadians(90))
+                .strafeTo(new Vector2d(50,-12))
                 .strafeTo(new Vector2d(52, -36))
                 .build();
 
         park = drive.actionBuilder(new Pose2d(52, -36, Math.toRadians(180)))
-                .strafeTo(new Vector2d(52, -6))
+                .strafeTo(new Vector2d(50, -6))
                 .strafeTo(new Vector2d(62, -6))
                 .build();
 

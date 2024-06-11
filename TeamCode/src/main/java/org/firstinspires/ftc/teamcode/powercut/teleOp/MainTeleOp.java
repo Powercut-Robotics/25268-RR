@@ -22,16 +22,16 @@ import java.util.List;
 @TeleOp(name="Drive")
 public class MainTeleOp extends OpMode {
     // Declaring the system
-    private RobotSettings settings = new RobotSettings();
-    private Drivetrain drivetrain = new Drivetrain();
-    private ArmSystem arm = new ArmSystem();
-    public DroneSystem droneSystem = new DroneSystem();
+    private final RobotSettings settings = new RobotSettings();
+    private final Drivetrain drivetrain = new Drivetrain();
+    private final ArmSystem arm = new ArmSystem();
+    private DroneSystem droneSystem = new DroneSystem();
 
 
     // Game monitoring
-    public boolean isEndGame = false;
+    private boolean isEndGame = false;
     private ElapsedTime runtime = new ElapsedTime();
-    public ElapsedTime loopTime = new ElapsedTime();
+    private ElapsedTime loopTime = new ElapsedTime();
 
     // Actions
     private FtcDashboard dash = FtcDashboard.getInstance();
@@ -54,6 +54,7 @@ public class MainTeleOp extends OpMode {
     public void start() {
         arm.gripLeftTuck();
         arm.gripRightTuck();
+
         arm.doPresetWrist();
         arm.doPresetArm();
         droneSystem.preset();
