@@ -75,10 +75,10 @@ public class ArmSystem {
 
     // powers and grip
     public void gripLeftActivate() {
-        gripLeft.setPosition(0.085);
+        gripLeft.setPosition(0.0875);
     }
     public void gripRightActivate() {
-        gripRight.setPosition(0.085);
+        gripRight.setPosition(0.0875);
     }
 
     public void gripLeftRelease() {
