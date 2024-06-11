@@ -24,7 +24,7 @@ public class ArmSystem {
     public TouchSensor wristResetTouchSensor = null;
 
 
-    protected PIDEx armPID = new PIDEx(RobotSettings.armDownCoefficients);
+    protected PIDEx armPID = new PIDEx(RobotSettings.armCoefficients);
     protected PIDEx wristPID = new PIDEx(RobotSettings.wristCoefficients);
 
 
@@ -75,10 +75,10 @@ public class ArmSystem {
 
     // powers and grip
     public void gripLeftActivate() {
-        gripLeft.setPosition(0.09);
+        gripLeft.setPosition(0.085);
     }
     public void gripRightActivate() {
-        gripRight.setPosition(0.09);
+        gripRight.setPosition(0.085);
     }
 
     public void gripLeftRelease() {

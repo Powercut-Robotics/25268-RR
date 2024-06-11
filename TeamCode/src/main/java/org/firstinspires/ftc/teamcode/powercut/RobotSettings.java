@@ -8,15 +8,13 @@ import org.opencv.core.Scalar;
 @Config
 public class RobotSettings {
     // PID values and integral limits.
-
-    public static PIDCoefficientsEx armUpCoefficients = new PIDCoefficientsEx(0.0015, 0.001, 0.001, 25000, 0, 0);
-    public static PIDCoefficientsEx armDownCoefficients = new PIDCoefficientsEx(0.0015, 0.001, 0.001, 25000, 0, 0);
+    public static PIDCoefficientsEx armCoefficients = new PIDCoefficientsEx(0.0015, 0.001, 0.001, 25000, 0, 0);
     public static PIDCoefficientsEx wristCoefficients = new PIDCoefficientsEx(0.01, 0, 0, 25.0, 1.0, 0.5);
 
     public static double armDeadband = 10;
     public static double wristDeadband = 2;
 
-    public static double armLimit = -4000;
+    public static double armLimit = -3600;
 
     public static double armPresetSpeed = 1.0;
     public static double wristPresetSpeed = 0.5;
