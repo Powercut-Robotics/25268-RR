@@ -29,7 +29,7 @@ public class MainTeleOp extends OpMode {
 
 
     // Game monitoring
-    private boolean isEndGame = false;
+    private boolean isEndGame = true;
     private ElapsedTime runtime = new ElapsedTime();
     private ElapsedTime loopTime = new ElapsedTime();
 
@@ -131,23 +131,6 @@ public class MainTeleOp extends OpMode {
                             arm.wristUp()
                     )
             );
-        } else if (gamepad2.circle) {
-            runningActions.clear();
-            runningActions.add(
-                    new SequentialAction(
-                        new ParallelAction(
-                                arm.armUp(),
-                                arm.wristUp()
-                        ),
-                            new SleepAction(0.2),
-                            arm.gripTuck(),
-                            new SleepAction(0.5),
-                            new ParallelAction(
-                                    arm.presetArm(),
-                                    arm.wristDown()
-                            )
-                    )
-            );
         } else if (gamepad2.cross) {
             runningActions.clear();
             runningActions.add(
@@ -171,6 +154,9 @@ public class MainTeleOp extends OpMode {
     private void droneControl() {
         if (gamepad1.triangle && isEndGame) {
             droneSystem.doLaunch();
+        } else if (gamepad1.cross) {
+            droneSystem.preset();
+
         }
     }
 
