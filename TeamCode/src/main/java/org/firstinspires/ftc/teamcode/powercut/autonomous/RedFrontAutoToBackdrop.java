@@ -48,9 +48,9 @@ public class RedFrontAutoToBackdrop extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .lineToY(-12)
+                .lineToY(-6)
                 .turn(Math.toRadians(90))
-                .strafeTo(new Vector2d(50,-12))
+                .strafeTo(new Vector2d(50,-6))
                 .strafeTo(new Vector2d(52, -36))
                 .build();
 

@@ -95,8 +95,8 @@ public class MainTeleOp extends OpMode {
 
         if (Math.abs(armSpeed) > RobotSettings.manualArmControlDeadband || Math.abs(wristSpeed) > RobotSettings.manualWristControlDeadband) {
             runningActions.clear();
-            arm.setArmPower(armSpeed);
-            arm.setWristPower(wristSpeed * RobotSettings.wristSpeedModifier);
+           // arm.setArmPower(armSpeed);
+           // arm.setWristPower(wristSpeed * RobotSettings.wristSpeedModifier);
         } else if (gamepad2.triangle || gamepad2.circle || gamepad2.cross || gamepad2.square || gamepad2.dpad_up ) {
             presetArmControl();
         } else {
