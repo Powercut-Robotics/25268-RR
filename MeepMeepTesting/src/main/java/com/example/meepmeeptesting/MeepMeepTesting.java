@@ -10,19 +10,71 @@ public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
-        RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity frontBlue = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(30, 60, Math.toRadians(180), Math.toRadians(180), 16.5)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-34, 60, 270))
-                                .splineTo(new Vector2d(40,-40), 180)
+                        drive.trajectorySequenceBuilder(new Pose2d(-36, 63, Math.toRadians(270)))
+                                .splineTo(new Vector2d(-58, 40), Math.toRadians(180))
+                                .strafeTo(new Vector2d(-58,10))
+                                .strafeTo(new Vector2d(50, 10))
+                                .waitSeconds(2)
+                                .strafeTo(new Vector2d(52, 36))
+                                .waitSeconds(4)
+                                .strafeTo(new Vector2d(52, 6))
+                                .strafeTo(new Vector2d(62, 6))
+                                .build()
+                );
+
+        RoadRunnerBotEntity backBlue = new DefaultBotBuilder(meepMeep)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+                .setConstraints(30, 60, Math.toRadians(180), Math.toRadians(180), 16.5)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(12, 63, Math.toRadians(270)))
+                                .splineTo(new Vector2d(40, 36), Math.toRadians(180))
+                                .strafeTo(new Vector2d(52,36))
+                                .waitSeconds(4)
+                                .strafeTo(new Vector2d(52, 60))
+                                .strafeTo(new Vector2d(62, 60))
+                                .build()
+                );
+
+        RoadRunnerBotEntity backRed = new DefaultBotBuilder(meepMeep)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+                .setConstraints(30, 60, Math.toRadians(180), Math.toRadians(180), 16.5)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(12, -63, Math.toRadians(90)))
+                                .splineTo(new Vector2d(40, -36), Math.toRadians(180))
+                                .strafeTo(new Vector2d(52,-36))
+                                .waitSeconds(4)
+                                .strafeTo(new Vector2d(52, -60))
+                                .strafeTo(new Vector2d(62, -60))
+                                .build()
+                );
+
+        RoadRunnerBotEntity frontRed = new DefaultBotBuilder(meepMeep)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+                .setConstraints(30, 60, Math.toRadians(180), Math.toRadians(180), 16.5)
+                .followTrajectorySequence(drive ->
+                        drive.trajectorySequenceBuilder(new Pose2d(-36, -63, Math.toRadians(90)))
+                                .splineTo(new Vector2d(-58, -40), Math.toRadians(180))
+                                .strafeTo(new Vector2d(-58,-10))
+                                .strafeTo(new Vector2d(50, -10))
+                                .waitSeconds(2)
+                                .strafeTo(new Vector2d(52, -36))
+                                .waitSeconds(4)
+                                .strafeTo(new Vector2d(50, -6))
+                                .strafeTo(new Vector2d(62, -6))
                                 .build()
                 );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .addEntity(myBot)
+                .addEntity(frontBlue)
+                .addEntity(backBlue)
+                .addEntity(frontRed)
+                .addEntity(backRed)
                 .start();
     }
 }

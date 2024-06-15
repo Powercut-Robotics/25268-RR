@@ -46,15 +46,22 @@ public class BlueFrontAutoToBackdrop extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .lineToY(6)
-                .turn(Math.toRadians(-90))
-                .strafeTo(new Vector2d(50, 6))
+                //.lineToY(6)
+                //.turn(Math.toRadians(-90))
+                //.strafeTo(new Vector2d(50, 6))
+                //.strafeTo(new Vector2d(52, 36))
+                //.build();
+
+// poss alt path no gamepeice contact
+                .splineTo(new Vector2d(-58, 40), Math.toRadians(180))
+                .strafeTo(new Vector2d(-58,10))
+                .strafeTo(new Vector2d(50, 10))
                 .strafeTo(new Vector2d(52, 36))
                 .build();
 
         park = drive.actionBuilder(new Pose2d(52, 36, Math.toRadians(180)))
-                .strafeTo(new Vector2d(52, 6))
-                .strafeTo(new Vector2d(62, 6))
+                .strafeTo(new Vector2d(52, 56))
+                .strafeTo(new Vector2d(62, 56))
                 .build();
 
 

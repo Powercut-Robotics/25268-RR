@@ -4,8 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.SleepAction;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -90,13 +88,13 @@ public class MainTeleOp extends OpMode {
     }
 
     public void doArmControl() {
-        double armSpeed = -gamepad2.left_stick_y;
-        double wristSpeed = gamepad2.right_stick_y;
+        double armSpeed = (gamepad2.share && gamepad2.right_bumper) ? -RobotSettings.armSpeed : ((gamepad2.share && gamepad2.left_bumper) ? RobotSettings.armSpeed : 0);
+        double wristSpeed = (gamepad2.options && gamepad2.right_bumper) ? -RobotSettings.wristSpeed : ((gamepad2.options && gamepad2.left_bumper) ? RobotSettings.wristSpeed : 0);
 
         if (Math.abs(armSpeed) > RobotSettings.manualArmControlDeadband || Math.abs(wristSpeed) > RobotSettings.manualWristControlDeadband) {
             runningActions.clear();
-           // arm.setArmPower(armSpeed);
-           // arm.setWristPower(wristSpeed * RobotSettings.wristSpeedModifier);
+            arm.setArmPower(armSpeed);
+            arm.setWristPower(wristSpeed * RobotSettings.wristSpeedModifier);
         } else if (gamepad2.triangle || gamepad2.circle || gamepad2.cross || gamepad2.square || gamepad2.dpad_up ) {
             presetArmControl();
         } else {

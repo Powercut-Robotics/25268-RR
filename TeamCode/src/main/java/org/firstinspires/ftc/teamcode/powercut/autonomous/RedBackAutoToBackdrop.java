@@ -47,9 +47,13 @@ public class RedBackAutoToBackdrop extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .lineToY(-36)
-                .turn(Math.toRadians(90))
-                .strafeTo(new Vector2d(52, -36))
+//                .lineToY(-36)
+//                .turn(Math.toRadians(90))
+//                .strafeTo(new Vector2d(52, -36))
+//                .build();
+
+                .splineTo(new Vector2d(40, -36), Math.toRadians(180))
+                .strafeTo(new Vector2d(52,-36))
                 .build();
 
         park = drive.actionBuilder(new Pose2d(52, -36, Math.toRadians(180)))
@@ -72,7 +76,7 @@ public class RedBackAutoToBackdrop extends OpMode {
                       arm.armUp(),
                       arm.wristUp()
               ),
-              new SleepAction(1),
+              new SleepAction(0.5),
               arm.gripTuck(),
               new SleepAction(1),
               new ParallelAction(arm.presetArm(), arm.presetWrist(), arm.gripRelease(), park)

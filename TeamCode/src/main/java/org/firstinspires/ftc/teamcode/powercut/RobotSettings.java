@@ -17,6 +17,9 @@ public class RobotSettings {
     public static double armPresetSpeed = 1.0;
     public static double wristPresetSpeed = 0.5;
 
+    public static double armSpeed = 0.5;
+    public static double wristSpeed = 0.2;
+
     public static double wristSpeedModifier = 0.25;
 
     // Preset positions
@@ -29,8 +32,8 @@ public class RobotSettings {
 
     // Gamepad settings
 
-    public static double manualArmControlDeadband = 0.005;
-    public static double manualWristControlDeadband = 0.005;
+    public static double manualArmControlDeadband = 0.05;
+    public static double manualWristControlDeadband = 0.05;
 
     public int endgameRumbleTime = 500;
 

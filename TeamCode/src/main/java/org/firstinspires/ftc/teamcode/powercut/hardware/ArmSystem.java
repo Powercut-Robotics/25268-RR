@@ -46,9 +46,6 @@ public class ArmSystem {
 
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         wristMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-
-
     }
 
 
@@ -151,21 +148,14 @@ public class ArmSystem {
         public boolean run(@NonNull TelemetryPacket packet) {
 
             double armTarget = RobotSettings.armUpPosition;
-            packet.put("armTarget", armTarget);
-
             double armPos = armMotor.getCurrentPosition();
-            packet.put("armPos", armPos);
-
             double armPower;
             armPower = armPID.calculate(armTarget, armPos);
-            packet.put("armPower", armPower);
 
             setArmPower(armPower);
 
-
             if ((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) {
                 armMotor.setPower(0);
-                packet.put("Arm complete", 1);
                 return false;
             } else {
                 return true;
@@ -184,14 +174,9 @@ public class ArmSystem {
         public boolean run(@NonNull TelemetryPacket packet) {
 
             double wristTarget = RobotSettings.wristUpPosition;
-            packet.put("wristTarget", wristTarget);
-
             double wristPos = wristMotor.getCurrentPosition();
-            packet.put("wristPos", wristPos);
-
             double wristPower;
             wristPower = wristPID.calculate(wristTarget, wristPos);
-            packet.put("wristPower", wristPower);
 
             setWristPower(wristPower);
 
@@ -209,52 +194,14 @@ public class ArmSystem {
         return new WristUp();
     }
 
-    public class ArmDown implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            if (armResetTouchSensor.isPressed()) {
-                resetArmEncoder();
-                return false;
-            } else {
-                double armTarget = RobotSettings.armDownPosition;
-                packet.put("armTarget", armTarget);
-
-                double armPos = armMotor.getCurrentPosition();
-                packet.put("armPos", armPos);
-
-                double armPower;
-                armPower = armPID.calculate(armTarget, armPos);
-                packet.put("armPower", armPower);
-
-                setArmPower(armPower);
-
-                if (((Math.abs(armMotor.getCurrentPosition()) > Math.abs(armTarget) - RobotSettings.armDeadband) && (Math.abs(armMotor.getCurrentPosition()) < Math.abs(armTarget) + RobotSettings.armDeadband)) || armResetTouchSensor.isPressed()) {
-                    armMotor.setPower(0);
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        }
-    }
-
-    public Action armDown() {
-        return new ArmDown();
-    }
-
     public class WristDown implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
 
             double wristTarget = RobotSettings.wristDownPosition;
-            packet.put("wristTarget", wristTarget);
-
             double wristPos = wristMotor.getCurrentPosition();
-            packet.put("wristPos", wristPos);
-
             double wristPower;
             wristPower = wristPID.calculate(wristTarget, wristPos);
-            packet.put("wristPower", wristPower);
 
             setWristPower(wristPower);
 
@@ -328,9 +275,6 @@ public class ArmSystem {
         return new GripLeftActivate();
     }
 
-
-
-
     public class GripRightActivate implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -342,8 +286,6 @@ public class ArmSystem {
     public Action gripRightActivateAction() {
         return new GripRightActivate();
     }
-
-
 
     public class GripLeftRelease implements Action {
         @Override

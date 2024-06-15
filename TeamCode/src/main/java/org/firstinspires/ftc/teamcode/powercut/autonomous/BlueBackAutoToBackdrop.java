@@ -46,9 +46,14 @@ public class BlueBackAutoToBackdrop extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .lineToY(36)
-                .turn(Math.toRadians(-90))
-                .strafeTo(new Vector2d(52, 36))
+//                .lineToY(36)
+//                .turn(Math.toRadians(-90))
+//                .strafeTo(new Vector2d(52, 36))
+//                .build();
+
+                //poss new auto path
+                .splineTo(new Vector2d(40, 36), Math.toRadians(180))
+                .strafeTo(new Vector2d(52,36))
                 .build();
 
         park = drive.actionBuilder(new Pose2d(52, 36, Math.toRadians(180)))
@@ -66,7 +71,7 @@ public class BlueBackAutoToBackdrop extends OpMode {
       Actions.runBlocking(new SequentialAction(
               new SleepAction(1),
               toBackdrop,
-              new SleepAction(1),
+              new SleepAction(0.5),
               new ParallelAction(
                       arm.armUp(),
                       arm.wristUp()
