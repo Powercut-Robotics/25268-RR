@@ -26,7 +26,7 @@ public class BlueFrontAutoToBackdrop extends OpMode {
     private Action park;
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, new Pose2d(-36, 63, Math.toRadians(270)));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(-36, 63.5, Math.toRadians(270)));
         arm.init(hardwareMap);
         droneSystem.init(hardwareMap);
 
@@ -60,8 +60,8 @@ public class BlueFrontAutoToBackdrop extends OpMode {
                 .build();
 
         park = drive.actionBuilder(new Pose2d(52, 36, Math.toRadians(180)))
-                .strafeTo(new Vector2d(52, 56))
-                .strafeTo(new Vector2d(62, 56))
+                .strafeTo(new Vector2d(52, 10))
+                .strafeTo(new Vector2d(62, 10))
                 .build();
 
 
@@ -75,14 +75,14 @@ public class BlueFrontAutoToBackdrop extends OpMode {
       Actions.runBlocking(new SequentialAction(
               new SleepAction(1),
               toBackdrop,
-              new SleepAction(1),
+              new SleepAction(0.25),
               new ParallelAction(
                       arm.armUp(),
                       arm.wristUp()
               ),
-              new SleepAction(1),
+              new SleepAction(0.5),
               arm.gripTuck(),
-              new SleepAction(1),
+              new SleepAction(0.5),
               new ParallelAction(arm.presetArm(), arm.presetWrist(), arm.gripRelease(), park)
       ));
 

@@ -27,7 +27,7 @@ public class RedBackAutoToBackdrop extends OpMode {
     private Action park;
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, new Pose2d(12, -63, Math.toRadians(90)));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(12, -63.5, Math.toRadians(90)));
         arm.init(hardwareMap);
         droneSystem.init(hardwareMap);
 
@@ -71,14 +71,14 @@ public class RedBackAutoToBackdrop extends OpMode {
       Actions.runBlocking(new SequentialAction(
               new SleepAction(1),
               toBackdrop,
-              new SleepAction(1),
+              new SleepAction(0.25),
               new ParallelAction(
                       arm.armUp(),
                       arm.wristUp()
               ),
               new SleepAction(0.5),
               arm.gripTuck(),
-              new SleepAction(1),
+              new SleepAction(0.5),
               new ParallelAction(arm.presetArm(), arm.presetWrist(), arm.gripRelease(), park)
       ));
 
