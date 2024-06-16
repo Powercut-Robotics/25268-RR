@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.powercut.autonomous;
+package org.firstinspires.ftc.teamcode.powercut.autonomous.blueback;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-@Autonomous(name = "BackBlueAutoToBackdrop", preselectTeleOp = "Drive")
-public class BlueBackAutoToBackdrop extends OpMode {
+@Autonomous(name = "BackBlueAutoParkSide", group="BlueBack", preselectTeleOp = "Drive")
+public class BlueBackAutoParkSide extends OpMode {
     private MecanumDrive drive;
     private ArmSystem arm = new ArmSystem();
     private DroneSystem droneSystem = new DroneSystem();
