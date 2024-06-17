@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.powercut.autonomous.redback;
+package org.firstinspires.ftc.teamcode.powercut.autonomous.bluefront;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
@@ -14,9 +14,8 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-
-@Autonomous(name = "BackRedAutoParkSide", group="RedBack", preselectTeleOp = "Drive")
-public class RedBackAutoParkSide extends OpMode {
+@Autonomous(name = "FrontBlueAutoParkCentre", group="BlueFront", preselectTeleOp = "Drive")
+public class BlueFrontStageDoorParkCentre extends OpMode {
     private MecanumDrive drive;
     private ArmSystem arm = new ArmSystem();
     private DroneSystem droneSystem = new DroneSystem();
@@ -27,7 +26,7 @@ public class RedBackAutoParkSide extends OpMode {
     private Action park;
     @Override
     public void init() {
-        drive = new MecanumDrive(hardwareMap, new Pose2d(12, -63.5, Math.toRadians(90)));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(-36, 63.5, Math.toRadians(270)));
         arm.init(hardwareMap);
         droneSystem.init(hardwareMap);
 
@@ -47,14 +46,17 @@ public class RedBackAutoParkSide extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                .splineTo(new Vector2d(40, -36), Math.toRadians(180))
-                .strafeTo(new Vector2d(52,-36))
+                .splineTo(new Vector2d(-57, 40), Math.toRadians(180))
+                .strafeTo(new Vector2d(-57,6))
+                .strafeTo(new Vector2d(50, 6))
+                .strafeTo(new Vector2d(52, 36))
                 .build();
 
-        park = drive.actionBuilder(new Pose2d(52, -36, Math.toRadians(180)))
-                .strafeTo(new Vector2d(52, -63))
-                .strafeTo(new Vector2d(62, -63))
+        park = drive.actionBuilder(new Pose2d(52, 36, Math.toRadians(180)))
+                .strafeTo(new Vector2d(52, 5))
+                .strafeTo(new Vector2d(62, 5))
                 .build();
+
 
         telemetry.addLine("Init paths. Fully Initialised.");
         telemetry.update();

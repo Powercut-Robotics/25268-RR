@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-@Autonomous(name = "FrontBlueAutoParkCentre", group="BlueFront", preselectTeleOp = "Drive")
-public class BlueFrontAutoParkCentre extends OpMode {
+@Autonomous(name = "FrontBlueAutoParkSide", group="BlueFront", preselectTeleOp = "Drive")
+public class BlueFrontRiggingParkSide extends OpMode {
     private MecanumDrive drive;
     private ArmSystem arm = new ArmSystem();
     private DroneSystem droneSystem = new DroneSystem();
@@ -46,22 +46,15 @@ public class BlueFrontAutoParkCentre extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-                //.lineToY(6)
-                //.turn(Math.toRadians(-90))
-                //.strafeTo(new Vector2d(50, 6))
-                //.strafeTo(new Vector2d(52, 36))
-                //.build();
-
-// poss alt path no gamepeice contact
-                .splineTo(new Vector2d(-58, 40), Math.toRadians(180))
-                .strafeTo(new Vector2d(-58,10))
-                .strafeTo(new Vector2d(50, 10))
+                .splineTo(new Vector2d(-24, 58), Math.toRadians(0))
+                .splineTo(new Vector2d(12, 58), Math.toRadians(0))
+                .splineTo(new Vector2d(40, 36), Math.toRadians(180))
                 .strafeTo(new Vector2d(52, 36))
                 .build();
 
         park = drive.actionBuilder(new Pose2d(52, 36, Math.toRadians(180)))
-                .strafeTo(new Vector2d(52, 10))
-                .strafeTo(new Vector2d(62, 10))
+                .strafeTo(new Vector2d(52, 63))
+                .strafeTo(new Vector2d(62, 63))
                 .build();
 
 

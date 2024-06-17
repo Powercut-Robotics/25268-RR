@@ -46,19 +46,13 @@ public class BlueBackAutoParkCentre extends OpMode {
 
 
         toBackdrop = drive.actionBuilder(drive.pose)
-//                .lineToY(36)
-//                .turn(Math.toRadians(-90))
-//                .strafeTo(new Vector2d(52, 36))
-//                .build();
-
-                //poss new auto path
                 .splineTo(new Vector2d(40, 36), Math.toRadians(180))
                 .strafeTo(new Vector2d(52,36))
                 .build();
 
         park = drive.actionBuilder(new Pose2d(52, 36, Math.toRadians(180)))
-                .strafeTo(new Vector2d(52, 10))
-                .strafeTo(new Vector2d(62, 10))
+                .strafeTo(new Vector2d(52, 5))
+                .strafeTo(new Vector2d(62, 5))
                 .build();
 
         telemetry.addLine("Init paths. Fully Initialised.");
