@@ -88,8 +88,8 @@ public class MainTeleOp extends OpMode {
     }
 
     public void doArmControl() {
-        double armSpeed = (gamepad2.share && gamepad2.right_bumper) ? -RobotSettings.armSpeed : ((gamepad2.share && gamepad2.left_bumper) ? RobotSettings.armSpeed : 0);
-        double wristSpeed = (gamepad2.options && gamepad2.right_bumper) ? -RobotSettings.wristSpeed : ((gamepad2.options && gamepad2.left_bumper) ? RobotSettings.wristSpeed : 0);
+        double armSpeed = (gamepad2.left_bumper || gamepad2.right_bumper) ? gamepad2.right_stick_y : 0;
+        double wristSpeed = (gamepad2.left_bumper || gamepad2.right_bumper) ? -gamepad2.left_stick_y : 0;
 
         if (Math.abs(armSpeed) > RobotSettings.manualArmControlDeadband || Math.abs(wristSpeed) > RobotSettings.manualWristControlDeadband) {
             runningActions.clear();
