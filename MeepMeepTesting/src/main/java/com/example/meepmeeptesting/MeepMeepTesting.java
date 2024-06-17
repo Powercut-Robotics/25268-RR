@@ -135,7 +135,7 @@ public class MeepMeepTesting {
                 .setBackgroundAlpha(0.95f)
 //                .addEntity(frontBlueCentre)
                 .addEntity(frontBlueSide)
-//                .addEntity(backBlueSide)
+                .addEntity(backBlueSide)
 //                .addEntity(backBlueCentre)
 //                .addEntity(frontRedCentre)
 //                .addEntity(frontRedSide)

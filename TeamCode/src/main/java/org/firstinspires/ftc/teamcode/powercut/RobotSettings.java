@@ -17,9 +17,6 @@ public class RobotSettings {
     public static double armPresetSpeed = 1.0;
     public static double wristPresetSpeed = 0.5;
 
-    public static double armSpeed = 0.5;
-    public static double wristSpeed = 0.2;
-
     public static double wristSpeedModifier = 0.25;
 
     // Preset positions
