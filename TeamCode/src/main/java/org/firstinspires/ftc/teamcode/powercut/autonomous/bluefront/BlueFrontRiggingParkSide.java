@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.ArmSystem;
 import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
-@Autonomous(name = "FrontBlueAutoParkSide", group="BlueFront", preselectTeleOp = "Drive")
+@Autonomous(name = "FrontBlueRiggingParkSide", group="BlueFront", preselectTeleOp = "Drive")
 public class BlueFrontRiggingParkSide extends OpMode {
     private MecanumDrive drive;
     private ArmSystem arm = new ArmSystem();

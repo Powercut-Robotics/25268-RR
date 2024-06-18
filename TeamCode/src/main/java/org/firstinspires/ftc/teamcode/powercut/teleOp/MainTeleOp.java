@@ -88,13 +88,13 @@ public class MainTeleOp extends OpMode {
     }
 
     public void doArmControl() {
-        double armSpeed = (gamepad2.left_bumper || gamepad2.right_bumper) ? gamepad2.right_stick_y : 0;
-        double wristSpeed = (gamepad2.left_bumper || gamepad2.right_bumper) ? -gamepad2.left_stick_y : 0;
+        double armSpeed = (gamepad2.left_bumper || gamepad2.right_bumper) ? (gamepad2.dpad_up ? -0.5 : (gamepad2.dpad_down ? 0.5 : 0)) : 0;
+        double wristSpeed = (gamepad2.left_bumper || gamepad2.right_bumper) ? (gamepad2.circle ? 0.2 : (gamepad2.square ? -0.2 : 0)) : 0;
 
         if (Math.abs(armSpeed) > RobotSettings.manualArmControlDeadband || Math.abs(wristSpeed) > RobotSettings.manualWristControlDeadband) {
             runningActions.clear();
             arm.setArmPower(armSpeed);
-            arm.setWristPower(wristSpeed * RobotSettings.wristSpeedModifier);
+            arm.setWristPower(wristSpeed);
         } else if (gamepad2.triangle || gamepad2.circle || gamepad2.cross || gamepad2.square || gamepad2.dpad_up ) {
             presetArmControl();
         } else {
@@ -192,6 +192,14 @@ public class MainTeleOp extends OpMode {
         if (runtime.seconds() > 90 && runtime.seconds() < 90.1){
             isEndGame = true;
 
+            gamepad1.rumble(settings.endgameRumbleTime);
+            gamepad2.rumble(settings.endgameRumbleTime);
+
+            gamepad1.setLedColor(255.0, 0.0,0.0, 30000);
+            gamepad2.setLedColor(255.0, 0.0, 0.0, 30000);
+        }
+
+        if (runtime.seconds() > 105 && runtime.seconds() < 105.1){
             gamepad1.rumble(settings.endgameRumbleTime);
             gamepad2.rumble(settings.endgameRumbleTime);
 

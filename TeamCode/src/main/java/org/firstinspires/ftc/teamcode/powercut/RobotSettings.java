@@ -25,7 +25,7 @@ public class RobotSettings {
 
 
     public static int armDownPosition = 50;
-    public static int wristDownPosition = -106;
+    public static int wristDownPosition = -103;
 
     // Gamepad settings
 
