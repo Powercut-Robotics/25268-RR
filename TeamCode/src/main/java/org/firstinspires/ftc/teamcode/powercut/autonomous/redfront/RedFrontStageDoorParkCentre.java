@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.powercut.hardware.DroneSystem;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 @Config
-@Autonomous(name = "FrontRedAutoParkCentre", group="RedFront", preselectTeleOp = "Drive")
+@Autonomous(name = "FrontRedStageDoorParkCentre", group="RedFront", preselectTeleOp = "Drive")
 public class RedFrontStageDoorParkCentre extends OpMode {
     private MecanumDrive drive;
     private ArmSystem arm = new ArmSystem();
@@ -49,9 +49,9 @@ public class RedFrontStageDoorParkCentre extends OpMode {
 
         toBackdrop = drive.actionBuilder(drive.pose)
                 .splineTo(new Vector2d(-57, -40), Math.toRadians(180))
-                .strafeTo(new Vector2d(-57,-6))
-                .strafeTo(new Vector2d(50, -6))
-                .strafeTo(new Vector2d(52, -36))
+                .strafeTo(new Vector2d(-57,-3))
+                .strafeTo(new Vector2d(50, -3))
+                .strafeTo(new Vector2d(52, -32))
                 .build();
 
         park = drive.actionBuilder(new Pose2d(52, -36, Math.toRadians(180)))
