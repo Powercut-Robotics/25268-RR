@@ -35,6 +35,7 @@ public class MainTeleOp extends OpMode {
     private FtcDashboard dash = FtcDashboard.getInstance();
     private List<Action> runningActions = new ArrayList<>();
 
+    private double heading = 0.0;
 
     @Override
     public void init() {
@@ -63,12 +64,16 @@ public class MainTeleOp extends OpMode {
     @Override
     public void loop() {
         TelemetryPacket packet = new TelemetryPacket();
+        heading = drivetrain.getHeading();
 
         double axial = -gamepad1.left_stick_y;
         double lateral = gamepad1.left_stick_x;
+
+        double axial_rotated = axial * Math.cos(heading) - lateral * Math.sin(heading);
+        double lateral_rotated = axial * Math.sin(heading) + lateral * Math.cos(heading);
         double yaw = gamepad1.right_stick_x;
 
-        drivetrain.doPowerFromGamepad(axial, lateral, yaw, getSpeedModifier());
+        drivetrain.doPowerFromGamepad(axial_rotated, lateral_rotated, yaw, getSpeedModifier());
         doArmControl();
         droneControl();
 
