@@ -12,7 +12,7 @@ public class RobotSettings {
     public static double armDeadband = 5;
     public static double wristDeadband = 2;
 
-    public static double armLimit = -3600;
+    public static double armLimit = -3500;
 
     public static double armPresetSpeed = 1.0;
     public static double wristPresetSpeed = 0.5;
@@ -20,7 +20,7 @@ public class RobotSettings {
     public static double wristSpeedModifier = 0.25;
 
     // Preset positions
-    public static int armUpPosition = -3450;
+    public static int armUpPosition = -3400;
     public static int  wristUpPosition = -70;
 
 

@@ -185,6 +185,7 @@ public class MainTeleOp extends OpMode {
 
         dash.sendTelemetryPacket(packet);
 
+        telemetry.addData("Heading", heading);
         telemetry.addData("Wheel Powers:", "%4.3f, %4.3f, %4.3f, %4.3f", powers[0], powers[1], powers[2], powers[3]);
         telemetry.addData("Arm/Wrist Position:", "%5.1f, %5.1f", armPos, wristPos);
         telemetry.addData("Grip Positions (Left/Right)", "%3.2f, %3.2f", arm.gripLeft.getPosition(), arm.gripRight.getPosition());
