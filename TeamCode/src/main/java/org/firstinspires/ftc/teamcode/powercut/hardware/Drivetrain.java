@@ -31,6 +31,8 @@ public class Drivetrain {
                 )
         );
 
+        imu.resetYaw();
+
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);

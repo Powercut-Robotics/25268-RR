@@ -69,11 +69,9 @@ public class MainTeleOp extends OpMode {
         double axial = -gamepad1.left_stick_y;
         double lateral = gamepad1.left_stick_x;
 
-        double axial_rotated = axial * Math.cos(heading) - lateral * Math.sin(heading);
-        double lateral_rotated = axial * Math.sin(heading) + lateral * Math.cos(heading);
         double yaw = gamepad1.right_stick_x;
 
-        drivetrain.doPowerFromGamepad(axial_rotated, lateral_rotated, yaw, getSpeedModifier());
+        drivetrain.doPowerFromGamepad(axial, lateral, yaw, getSpeedModifier());
         doArmControl();
         droneControl();
 
